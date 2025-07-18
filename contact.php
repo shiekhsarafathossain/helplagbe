@@ -15,8 +15,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      font-family: 'Open Sans', sans-serif;
+    /* font start */
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
+
+    .open-sans-font {
+      font-family: "Open Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 500;
+      font-style: normal;
+      font-variation-settings:
+        "wdth" 100;
+    }
+
+    /* font end */
+
+    .logo{
+      width:70px;
+    }
+
+    .title-bar {
+        text-align: center !important;
+        background: linear-gradient(135deg, #C4D9FF 0%, #5A8DFF 100%) !important;
+    }
+
+    .nav-custom{
+      background: linear-gradient(135deg, #C5BAFF 0%, #8A77FF 100%) !important;
+    }
+
+    .footer-custom{
+      background: linear-gradient(135deg, #C5BAFF 0%, #8A77FF 100%) !important;
     }
 
     .team-section-title {
@@ -68,8 +95,7 @@
     }
   </style>
 </head>
-<body>
-
+<body class="open-sans-font">
 <!-- Navbar -->
 <?php include("./includes/navbar.php"); ?>
 

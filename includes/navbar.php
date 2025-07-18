@@ -1,54 +1,72 @@
-<header class="p-3 mb-3 border-bottom"> 
-    <div class="container">     
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"> 
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none"> 
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                    <use xlink:href="#bootstrap">
-                    </use>
-                </svg> 
-            </a> 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"> 
-                    <li>
-                        <a href="#" class="nav-link px-2 link-secondary">Home</a>
-                    </li> 
-                    <li>
-                        <a href="#" class="nav-link px-2 link-body-emphasis">Services</a>
-                    </li> 
-                    <li>
-                        <a href="contact.php" class="nav-link px-2 link-body-emphasis">Contact</a>
-                    </li> 
-                    <li>
-                        <a href="about.php" class="nav-link px-2 link-body-emphasis">About Us</a>
-                    </li>
-                    <li>
-                        <a href="faq.php" class="nav-link px-2 link-body-emphasis">FAQ</a>
-                    </li>  
-                </ul> 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search"> 
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search"> 
-                </form> 
-                <div class="dropdown text-end"> 
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> 
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle"> 
-                    </a> 
-                    <ul class="dropdown-menu text-small" style=""> 
-                        <li>
-                            <a class="dropdown-item" href="#">New project...</a>
-                        </li> 
-                        <li>
-                            <a class="dropdown-item" href="#">Settings</a>
-                        </li> 
-                        <li>
-                            <a class="dropdown-item" href="#">Profile</a>
-                        </li> 
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li> 
-                        <li>
-                            <a class="dropdown-item" href="#">Sign out</a>
-                        </li> 
-                    </ul> 
-                </div> 
-            </div> 
-        </div> 
-</header>
+<!-- First Part Start -->
+<div class="navbar navbar-expand-lg login-bar">
+      <ul class="navbar-nav me-auto">
+      <?php
+      if(!isset($_SESSION['username'])){
+          echo "<li class='nav-item'>
+        <a class='nav-link' href='#'>Welcome Guest</a>
+      </li>";
+        }
+        else{
+          echo "<li class='nav-item'>
+        <a class='nav-link' href='./users_area/profile.php'>Welcome ".$_SESSION['username']."</a>
+      </li>";
+        }
+     
+        if(!isset($_SESSION['username'])){
+          echo "<li class='nav-item'>
+        <a class='nav-link' href='./users_area/user_login.php'>Login</a>
+      </li>";
+        }
+        else{
+          echo "<li class='nav-item'>
+        <a class='nav-link' href='./users_area/logout.php'>Logout</a>
+      </li>";
+        }
+
+      ?>
+      </ul>
+
+    </div>
+<!-- First Part End -->
+
+<!-- Second Part Start -->
+    <div class="container-fluid p-0">
+        
+<nav class="navbar navbar-expand-lg nav-custom">
+  <div class="container-fluid">
+    
+    <a class="navbar-brand" href="index.php"><img src="./assets/images/logo.png" alt="logo" class="logo"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="./index.php">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./contact.php">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./about.php">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./faq.php">FAQ</a>
+        </li>
+    
+      </ul>
+      <form class="d-flex" role="search" action="search_product.php" method="GET">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_data">
+
+        <input class="btn btn-outline-light" type="submit" value="Search" name="search_data_product">
+      </form>
+    </div>
+  </div>
+</nav>
+    </div>
+<!-- Second Part End -->
+  

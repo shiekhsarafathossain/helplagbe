@@ -1,68 +1,143 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+/* font start */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
+
+.open-sans-font {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
-html{
-    height: 100% !important;
+.logo{
+  width:70px;
+}
+
+/* card style start */
+.card-img-top{
+  height: 200px;
+}
+
+.top-bar {
+    text-align: center !important;
+    background: linear-gradient(135deg, #C4D9FF 0%, #5A8DFF 100%) !important;
+    
 }
 
 
-body{
-    min-height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
+/* card style end */
 
-footer{
-    margin-top: auto !important;
-}
-/* team design start*/
-.team-img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border: 3px solid #dee2e6;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.nav-custom{
+  background: linear-gradient(135deg, #C5BAFF 0%, #8A77FF 100%) !important;
 }
 
 
-  .team-card {
-     background: #f7f9fc;
-     transition: transform 0.3s ease, box-shadow 0.3s ease;
-     cursor: default;
-            height: 100%; /* Ensure equal card height */
-        }
-        
-        .team-card:hover {
-            transform: translateY(-8px) scale(1.03);
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.25);
-            background: #e6f0ff;
-        }
+/* cart.php start */
+.cart_img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+/* cart.php end */
 
-        .team-card h5, .team-card p {
-            margin-bottom: 0.5rem;
-        }
+.footer-custom{
+  background: linear-gradient(135deg, #C5BAFF 0%, #8A77FF 100%) !important;
+}
 
-        .icon-text {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            justify-content: center;
-        }
+/* button start */
+.button-addtocart-color {
+  background: linear-gradient(135deg, #C4D9FF, #91B9FF) !important;
+  font-weight: bold;
+  color: #000;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-        .bio-text {
-            margin-top: 0.5rem;
-            font-size: 0.95rem;
-            color: #555;
-        }
-        
-        .team-section-title {
-            letter-spacing: 1.5px;
-            font-weight: bold;
-        }
+.button-addtocart-color:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.button-viewmore-color {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  color: #000;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.button-viewmore-color:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
 
 
+/* button end */
 
-/* team design end*/
+/* sidebar start */
+
+.side-bar{
+  height: 100%;
+  background: linear-gradient(135deg, #E8F9FF 10%, #A0D8FF 100%) !important;
+}
+.category-title{
+  background: linear-gradient(135deg, #E8F9FF 10%, #A0D8FF 100%) !important;
+  font-size: large;
+  font-weight: bold;
+
+}
+.category-item {
+  background: linear-gradient(135deg, #E8F9FF 10%, #A0D8FF 100%) !important;
+  margin: 5px;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.category-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #C4D9FF 10%, #91B9FF 100%) !important;
+  transition: all 0.3s ease;
+}
+
+/* sidebar end */
+
+
+/* card style start*/
+.card {
+  background: #ffffffcc; /* white with slight transparency */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(8px); /* soft blur behind card for depth */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+.title-fixed {
+  height: 1.5em; /* fits 1-2 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.description-fixed {
+  height: 4em; /* fits around 4-5 lines */
+  /* overflow: hidden;
+  text-overflow: ellipsis; */
+}
+
+.price{
+  font-size: large;
+  font-weight: bolder;
+}
+
+/* card style end */
+
