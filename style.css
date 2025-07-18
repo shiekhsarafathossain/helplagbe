@@ -1,0 +1,68 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100% !important;
+}
+
+
+body{
+    min-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+footer{
+    margin-top: auto !important;
+}
+/* team design start*/
+.team-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 3px solid #dee2e6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+  .team-card {
+     background: #f7f9fc;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+     cursor: default;
+            height: 100%; /* Ensure equal card height */
+        }
+        
+        .team-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.25);
+            background: #e6f0ff;
+        }
+
+        .team-card h5, .team-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .icon-text {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .bio-text {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .team-section-title {
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+
+
+
+/* team design end*/
