@@ -18,7 +18,7 @@
                         <a href="contact.php" class="nav-link px-2 link-body-emphasis">Contact</a>
                     </li> 
                     <li>
-                        <a href="#" class="nav-link px-2 link-body-emphasis">About Us</a>
+                        <a href="about.php" class="nav-link px-2 link-body-emphasis">About Us</a>
                     </li>
                     <li>
                         <a href="#" class="nav-link px-2 link-body-emphasis">FAQ</a>
