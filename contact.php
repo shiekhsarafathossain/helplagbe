@@ -71,7 +71,7 @@
 <body>
 
 <!-- Navbar -->
-<?php include("./common_function/navbar.php"); ?>
+<?php include("./includes/navbar.php"); ?>
 
 <!-- Team Section -->
 <section class="container my-5">
@@ -140,7 +140,7 @@
 </section>
 
 <!-- Footer -->
-<?php include("./common_function/footer.php"); ?>
+<?php include("./includes/footer.php"); ?>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

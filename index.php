@@ -14,7 +14,7 @@
 </head>
 <body>
     <!-- Nav bar start -->
-    <?php include("./common_function/navbar.php"); ?>
+    <?php include("./includes/navbar.php"); ?>
     <!-- Nav bar end -->
 
     <!-- center start -->
@@ -155,7 +155,7 @@
     
 
     <!-- footer start -->
-    <?php include("./common_function/footer.php"); ?>
+    <?php include("./includes/footer.php"); ?>
     <!-- footer end -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
