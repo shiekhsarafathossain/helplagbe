@@ -81,7 +81,7 @@
   <div class="row justify-content-center g-4">
     <div class="col-md-4">
       <div class="team-card">
-        <img src="./assets/images/team_images/raya.jpeg" alt="Sheikh Sarafat Hossain" class="team-img">
+        <img src="./assets/images/team_images/sarafat.jpg" alt="Sheikh Sarafat Hossain" class="team-img">
         <h5 class="fw-semibold mb-1">Sheikh Sarafat Hossain</h5>
         <p class="text-primary fw-semibold">CEO</p>
         <p class="icon-text"><i class="fa-solid fa-envelope text-secondary"></i> ceo@helplagbe.com</p>
@@ -103,7 +103,7 @@
 
     <div class="col-md-4">
       <div class="team-card">
-        <img src="./assets/images/team_images/nipa.jpg" alt="Nipa Mridha" class="team-img">
+        <img src="./assets/images/team_images/sadia.jpg" alt="Sadia Reza" class="team-img">
         <h5 class="fw-semibold mb-1">Sadia Reza</h5>
         <p class="text-primary fw-semibold">CFO</p>
         <p class="icon-text"><i class="fa-solid fa-envelope text-secondary"></i> cfo@helplagbe.com</p>
@@ -117,7 +117,7 @@
   <div class="row justify-content-center g-4 mt-3">
     <div class="col-md-4">
       <div class="team-card">
-        <img src="./assets/images/team_images/shibly.jpg" alt="Jubaiya Akter Shibly" class="team-img">
+        <img src="./assets/images/team_images/raisa.jpg" alt="Wasifa Motahara Raisa" class="team-img">
         <h5 class="fw-semibold mb-1">Wasifa Motahara Raisa</h5>
         <p class="text-primary fw-semibold">CTO</p>
         <p class="icon-text"><i class="fa-solid fa-envelope text-secondary"></i> cto@helplagbe.com</p>
@@ -128,7 +128,7 @@
 
     <div class="col-md-4">
       <div class="team-card">
-        <img src="./assets/images/team_images/sarafat.jpg" alt="Ferdowsi Yesmin" class="team-img">
+        <img src="./assets/images/team_images/ferdowsi.jpg" alt="Ferdowsi Yesmin" class="team-img">
         <h5 class="fw-semibold mb-1">Ferdowsi Yesmin</h5>
         <p class="text-primary fw-semibold">COO</p>
         <p class="icon-text"><i class="fa-solid fa-envelope text-secondary"></i> c00@helplagbe.com</p>
