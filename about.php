@@ -169,7 +169,7 @@
         At <strong>Help Lagbe?</strong>, our mission is to simplify your everyday life by providing a platform where you can quickly find and book reliable help from your neighborhood — be it fixing a leaky faucet, deep-cleaning your home, or assembling new furniture. We strive to foster trust and professionalism in every service call, while building a stronger local service economy.
       </p>
       <div class="text-center mt-4">
-        <a href="contact.php" class="team-btn">Meet Our Team</a>
+        <a href="contact.php" class="team-btn text-decoration-none">Meet Our Team</a>
       </div>
     </div>
   </div>
