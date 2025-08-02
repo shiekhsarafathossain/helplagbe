@@ -210,7 +210,7 @@ table, th, td {
      
         if(!isset($_SESSION['username'])){
           echo "<li class='nav-item'>
-        <a class='nav-link' href='./admin_login.php'>Login</a>
+        <a class='nav-link' href='./login.php'>Login</a>
       </li>";
         }
         else{
@@ -250,28 +250,20 @@ table, th, td {
     <div class="col-md-2 p-0 text-center">
         <ul class="navbar-nav me-auto side-bar">
             <li class="nav-item category-title pt-2">
-                <h3 class="fw-bold">Admin Dashboard</h3>
+                <h3 class="fw-bold">Dashboard</h3>
             </li>
             <li class='nav-item category-item'>
-                <a href='insert_product.php' class='nav-link'>Insert Product</a>                
+                <a href='insert_service.php' class='nav-link'>Insert Services</a>                
             </li>
             <li class='nav-item category-item'>
-                <a href='index.php?view_products' class='nav-link'>View Products</a>                
+                <a href='index.php?view_services' class='nav-link'>View Services</a>                
             </li>
-            <li class='nav-item category-item'>
-                <a href='index.php?insert_category' class='nav-link'>Insert Cateogory</a>                
-            </li>
-            <li class='nav-item category-item'>
-                <a href='./index.php?view_categories' class='nav-link'>View Categories</a>                
-            </li>
+            
             <li class='nav-item category-item'>
                 <a href='./index.php?list_orders' class='nav-link'>View Order List</a>                
             </li>
             <li class='nav-item category-item'>
                 <a href='./index.php?list_payments' class='nav-link'>View Payment List</a>                
-            </li>
-            <li class='nav-item category-item'>
-                <a href='./index.php?list_users' class='nav-link'>View User List</a>                
             </li>
         </ul>
     </div>
@@ -282,27 +274,16 @@ table, th, td {
         <div class="row">
             <div class="container">
             <?php 
-                if(isset($_GET["insert_category"])){
-                    include("insert_categories.php");
+                if(isset($_GET["view_services"])){
+                    include("view_services.php");
                 }
-                if(isset($_GET["view_products"])){
-                    include("view_products.php");
+                if(isset($_GET["edit_service"])){
+                    include("edit_service.php");
                 }
-                if(isset($_GET["edit_products"])){
-                    include("edit_products.php");
+                if(isset($_GET["delete_service"])){
+                    include("delete_service.php");
                 }
-                if(isset($_GET["delete_products"])){
-                    include("delete_products.php");
-                }
-                if(isset($_GET["view_categories"])){
-                    include("view_categories.php");
-                }
-                if(isset($_GET["edit_category"])){
-                    include("edit_category.php");
-                }
-                if(isset($_GET["delete_category"])){
-                    include("delete_category.php");
-                }
+                
                 if(isset($_GET["list_orders"])){
                     include("list_orders.php");
                 }
@@ -312,52 +293,9 @@ table, th, td {
                 if(isset($_GET["edit_orders"])){
                     include("edit_orders.php");
                 }
-                if(isset($_GET["list_users"])){
-                    include("list_users.php");
-                }
                 if(isset($_GET["list_payments"])){
                     include("list_payments.php");
                 }
-                if(empty($_GET)){
-                  $get_quantity = "SELECT * FROM products WHERE (stock_quantity - sold_quantity) < 5";
-                  $result = mysqli_query($con, $get_quantity);
-
-        if ($result && mysqli_num_rows($result) > 0) {
-        echo "
-        <h2 class='text-center text-danger'>Notice</h2>
-        <h3 class='text-center'>Low Stock Products</h3>
-        <table class='table table-border mt-3'>
-                <thead>
-                    <tr>
-                        <th>Product ID</th>
-                        <th>Product Title</th>
-                        <th>Stock Quantity</th>
-                        <th>Sold Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>";
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>
-                    <td>{$row['product_id']}</td>
-                    <td>{$row['product_title']}</td>
-                    <td>{$row['stock_quantity']}</td>
-                    <td>{$row['sold_quantity']}</td>
-                  </tr>";
-        }
-
-        echo "</tbody></table>";
-    } else {
-        echo "
-        <h2 class='text-center text-danger'>Notice</h2>
-        <h3 class='text-center text-success'>No products with low stock.</h3>";
-    }
-                }
-        
-
-                
-
-                
                 
             ?>
             </div>

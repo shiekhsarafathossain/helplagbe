@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
+
+
+.open-sans-font {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+*{
+  
+}
+.logo{
+  width:100px;
+}
+
+.nav-custom{
+  background-color: green;
+}
+/* dfgdfd */
+
+/* cart.php start */
+.cart_img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+/* cart.php end */
+
+/* profile.php start */
+
+.pp-image{
+   height: 15rem;
+    width: 100%;
+    object-fit:cover;
+}
+
+/* profile.php end */

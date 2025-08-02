@@ -20,7 +20,7 @@ include("../Includes/connect.php");
         Welcome Back,
       </h1>
       <h1 class="text-5xl font-extrabold mb-4 drop-shadow-lg">
-        Stuff Panel
+        Service Provider
       </h1>
  
       <div class="mt-10 w-full rounded-lg overflow-hidden shadow-lg">
