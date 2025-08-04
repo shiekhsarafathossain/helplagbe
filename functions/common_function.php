@@ -1,13 +1,87 @@
 <?php
 
-// getting service function start
+// Function to get working zones for a dropdown
+function getWorkingZones(){
+    global $con;
+    $query = "SELECT * FROM working_zone ORDER BY zone_name ASC";
+    $result = mysqli_query($con, $query);
+    while($row = mysqli_fetch_assoc($result)){
+        $zone_id = $row['zone_id'];
+        $zone_name = $row['zone_name'];
+        echo "<option value='$zone_id'>$zone_name</option>";
+    }
+}
+
+// getting category function - LOGIC has been updated to be ZONE-AWARE
+function getCategory(){
+    global $con;
+    
+    $zone_id_filter = isset($_GET['zone_id']) ? (int)$_GET['zone_id'] : null;
+    $current_page = basename($_SERVER['PHP_SELF']);
+
+    $query = "SELECT DISTINCT c.category_id, c.category_title FROM categories c ";
+
+    // If a zone is selected, join with the service table to filter categories
+    if ($zone_id_filter) {
+        $query .= "JOIN service s ON c.category_id = s.category_id WHERE s.zone_id = ?";
+    }
+    $query .= " ORDER BY c.category_title ASC";
+    
+    $stmt = $con->prepare($query);
+    if ($zone_id_filter) {
+        $stmt->bind_param("i", $zone_id_filter);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    while($row_data = $result->fetch_assoc()){
+        $category_title = $row_data['category_title'];
+        $category_id = $row_data['category_id'];
+        
+        $active_class = (isset($_GET['category']) && $_GET['category'] == $category_id) ? 'active' : '';
+
+        // Build link that preserves the zone filter
+        $link = "$current_page?category=$category_id";
+        if ($zone_id_filter) {
+            $link .= "&zone_id=$zone_id_filter";
+        }
+        
+        // DESIGN is preserved from your template (outputs a button)
+        echo "<a href='$link' class='btn $active_class'>$category_title</a>";
+    }
+}
+
+
+// getting service function - LOGIC has been updated to be ZONE-AWARE
 function getservice(){
     global $con;
-    // if categories is not set, display random services
     if(!isset($_GET['category'])){
-        $select_query = "SELECT * FROM service ORDER BY rand() LIMIT 0,6";
-        $result_query = mysqli_query($con,$select_query);
-        while($row = mysqli_fetch_assoc($result_query)){
+        $zone_id_filter = isset($_GET['zone_id']) ? (int)$_GET['zone_id'] : null;
+        
+        $query = "SELECT * FROM service ";
+        if ($zone_id_filter) {
+            $query .= "WHERE zone_id = ? ";
+        }
+        
+        // On index.php, limit to 6 random services if no zone is set
+        if(basename($_SERVER['PHP_SELF']) == 'index.php' && !$zone_id_filter){
+            $query .= "ORDER BY rand() LIMIT 6";
+        } else {
+            $query .= "ORDER BY rand()";
+        }
+
+        $stmt = $con->prepare($query);
+        if ($zone_id_filter) {
+            $stmt->bind_param("i", $zone_id_filter);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if($result->num_rows == 0 && $zone_id_filter){
+             echo "<h1 class='text-center mb-5 fw-bold text-primary'>Sorry, no services are available in this location yet.</h1>";
+        }
+
+        while($row = $result->fetch_assoc()){
             $id = $row['id'];
             $title = $row['title'];
             $description = $row['description'];
@@ -15,12 +89,13 @@ function getservice(){
             $price = $row['price'];
             $short_description = strlen($description) > 80 ? substr($description, 0, 80) . '...' : $description;
 
+            // DESIGN is preserved from your template
             echo "<div class='col-md-4'>
                     <div class='service-card'>
                       <img src='./assets/images/service_images/$image1' class='card-img-top' alt='$title'>
-                      <div class='card-body'>
+                      <div class='card-body d-flex flex-column'>
                         <h5 class='card-title'>$title</h5>
-                        <p class='card-text'>$short_description</p>
+                        <p class='card-text flex-grow-1'>$short_description</p>
                         <p class='price'>৳ " . number_format($price) . "</p>
                         <div class='d-flex justify-content-between align-items-center mt-3'>
                             <a href='details.php?id=$id' class='btn btn-sm btn-outline-primary'>View Details</a>
@@ -32,9 +107,61 @@ function getservice(){
         }
     }
 }
-// getting service function end
 
-// getting all services
+// getting service by category - LOGIC has been updated to be ZONE-AWARE
+function getServiceByCategories(){
+    global $con;
+    if(isset($_GET['category'])){
+        $category_id = (int)$_GET['category'];
+        $zone_id_filter = isset($_GET['zone_id']) ? (int)$_GET['zone_id'] : null;
+
+        $query = "SELECT * FROM service WHERE category_id = ? ";
+        if ($zone_id_filter) {
+            $query .= "AND zone_id = ? ";
+        }
+        $query .= "ORDER BY rand()";
+        
+        $stmt = $con->prepare($query);
+        if ($zone_id_filter) {
+            $stmt->bind_param("ii", $category_id, $zone_id_filter);
+        } else {
+            $stmt->bind_param("i", $category_id);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if($result->num_rows == 0){
+            echo "<h1 class='text-center mb-5 fw-bold text-primary'>No services in this category.</h1>";
+        } else {
+            while($row = $result->fetch_assoc()){
+                $id = $row['id'];
+                $title = $row['title'];
+                $description = $row['description'];
+                $image1 = $row['image1'];
+                $price = $row['price'];
+                $short_description = strlen($description) > 80 ? substr($description, 0, 80) . '...' : $description;
+                
+                // DESIGN is preserved from your template
+                echo "<div class='col-md-4'>
+                        <div class='service-card'>
+                          <img src='./assets/images/service_images/$image1' class='card-img-top' alt='$title'>
+                          <div class='card-body d-flex flex-column'>
+                            <h5 class='card-title'>$title</h5>
+                            <p class='card-text flex-grow-1'>$short_description</p>
+                            <p class='price'>৳ " . number_format($price) . "</p>
+                            <div class='d-flex justify-content-between align-items-center mt-3'>
+                                <a href='details.php?id=$id' class='btn btn-sm btn-outline-primary'>View Details</a>
+                                <a href='booking.php?id=$id' class='btn btn-sm btn-primary'>Book Now</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>";
+            }
+        }
+    }
+}
+
+// Other functions remain unchanged from your template
 function getAllservice(){
   global $con;
   if(!isset($_GET['category'])){
@@ -79,92 +206,16 @@ function getAllservice(){
   }
 }
 
-// getting service by category
-function getServiceByCategories(){
-    global $con;
-    if(isset($_GET['category'])){
-        $category_id = $_GET['category'];
-        $select_query = "SELECT * FROM service WHERE category_id = $category_id ORDER BY rand()";
-        $result_query = mysqli_query($con,$select_query);
-        $numOfRows = mysqli_num_rows($result_query);
-        if($numOfRows==0){
-            echo "<h1 class='text-center mb-5 fw-bold text-primary'>
-        No services in this category.
-      </h1>";
-        } else {
-            while($row = mysqli_fetch_assoc($result_query)){
-              $id = $row['id'];
-              $title = $row['title'];
-              $description = $row['description'];
-              $image1 = $row['image1'];
-              $price = $row['price'];
-              $short_description = strlen($description) > 80 ? substr($description, 0, 80) . '...' : $description;
-
-              echo "<div class='col-md-4'>
-                      <div class='service-card'>
-                        <img src='./assets/images/service_images/$image1' class='card-img-top' alt='$title'>
-                        <div class='card-body'>
-                          <h5 class='card-title'>$title</h5>
-                          <p class='card-text'>$short_description</p>
-                          <p class='price'>৳ " . number_format($price) . "</p>
-                          <div class='d-flex justify-content-between align-items-center mt-3'>
-                              <a href='details.php?id=$id' class='btn btn-sm btn-outline-primary'>View Details</a>
-                              <a href='booking.php?id=$id' class='btn btn-sm btn-primary'>Book Now</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>";
-            }
-        }
-    }
-}
-
-// getting category function
-// getting category function
-function getCategory(){
-    global $con;
-    
-    // Get the name of the current script (e.g., 'index.php' or 'service.php')
-    $current_page = basename($_SERVER['PHP_SELF']);
-
-    $select_category = "SELECT * FROM categories";
-    $result_category = mysqli_query($con,$select_category);
-    
-    while($row_data = mysqli_fetch_assoc($result_category)){
-        $category_title = $row_data['category_title'];
-        $category_id = $row_data['category_id'];
-        
-        $active_class = (isset($_GET['category']) && $_GET['category'] == $category_id) ? 'active' : '';
-
-        // Use the $current_page variable to create a dynamic link
-        echo "<a href='$current_page?category=$category_id' class='btn $active_class'>$category_title</a>";
-    }
-}
-
-// searching function// searching function
 function searchServices(){
   global $con;
-    // Check if the search form was submitted
     if(isset($_GET['search_data_product'])){
-      // Sanitize the user input to prevent SQL injection
       $searchValue = mysqli_real_escape_string($con, $_GET['search_data']);
-      
-      // Updated query to search in both title and description
       $search_query = "SELECT * FROM service WHERE title LIKE '%$searchValue%' OR description LIKE '%$searchValue%'";
-      
       $result_query = mysqli_query($con,$search_query);
       $numOfRows = mysqli_num_rows($result_query);
-
-      // If no results, show a friendly message
       if($numOfRows==0){
-          echo "<h1 class='text-center mb-5 fw-bold text-primary'>
-        No services found matching your search.
-      </h1>";
+          echo "<h1 class='text-center mb-5 fw-bold text-primary'>No services found matching your search.</h1>";
       }
-
-      
-
-      // Loop through results and display them
       while($row = mysqli_fetch_assoc($result_query)){
           $id = $row['id'];
           $title = $row['title'];
@@ -172,8 +223,6 @@ function searchServices(){
           $image1 = $row['image1'];
           $price = $row['price'];
           $short_description = strlen($description) > 80 ? substr($description, 0, 80) . '...' : $description;
-
-          // Uses the same modern service card style
           echo "<div class='col-md-4 mb-4'>
                   <div class='service-card'>
                     <img src='./assets/images/service_images/$image1' class='card-img-top' alt='$title'>
@@ -191,7 +240,7 @@ function searchServices(){
       }
     }
 }
-// view details function
+
 function view_details(){
   global $con;
   if(isset($_GET['id']) && !isset($_GET['category'])){
@@ -209,8 +258,6 @@ function view_details(){
           $contact = $row['contact'];
           $address = $row['address'];
           $price = $row['price'];
-
-          // This function now creates its own styled container
           echo "
             <div class='bg-white p-4 rounded shadow-sm'>
               <div class='row g-5'>
@@ -265,9 +312,6 @@ function view_details(){
   }
 }
 
-// view details end
-
-// get ip_address function
 function getIPAddress() {
     if(!empty($_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -279,7 +323,6 @@ function getIPAddress() {
     return $ip;
 }
 
-// cart function start (Restored for compatibility)
 function cart(){
   if(isset($_GET['book'])){
     global $con;
@@ -300,9 +343,7 @@ function cart(){
     }
   }
 }
-// cart function end
 
-// function for get cart item numbers start (Restored for compatibility)
 function cart_item(){
   if(isset($_GET['add_to_cart'])){
     global $con;
@@ -320,9 +361,7 @@ function cart_item(){
     }
     echo $count_cart_items;
 }
-//function for get cart item numbers end
 
-//get user order details
 function get_user_order_details(){
   global $con;
   if(isset($_SESSION['username'])){
@@ -346,42 +385,4 @@ function get_user_order_details(){
       }
   }
 }
-
-
-// Function to get working zones for a dropdown
-function getWorkingZones(){
-    global $con;
-    $query = "SELECT * FROM working_zone ORDER BY zone_name ASC";
-    $result = mysqli_query($con, $query);
-    while($row = mysqli_fetch_assoc($result)){
-        $zone_id = $row['zone_id'];
-        $zone_name = $row['zone_name'];
-        echo "<option value='$zone_id'>$zone_name</option>";
-    }
-}
-
-// Function to get categories available in a specific zone
-function getCategoriesByZone($zone_id) {
-    global $con;
-    // This query finds all unique categories for services that are in the selected zone
-    $query = "SELECT DISTINCT c.category_id, c.category_title 
-              FROM categories c
-              JOIN service s ON c.category_id = s.category_id
-              WHERE s.zone_id = ?
-              ORDER BY c.category_title ASC";
-    
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("i", $zone_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    $categories = [];
-    while ($row = $result->fetch_assoc()) {
-        $categories[] = $row;
-    }
-    return $categories;
-}
-
-
-
 ?>
