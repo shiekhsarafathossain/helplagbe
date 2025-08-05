@@ -1,69 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Services</title>
-</head>
-<body>
-    <h1 class="text-center">View Services</h1>
-    <table class="table table-border m5-5">
-        <thead class="bg-info">
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Keywords</th>
-                <th>Image</th>
-                <th>Price</th>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Address</th>
-                <th>Status</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody class="bg-secondary text-light">
-            
-            <?php
-            $get_services = "SELECT * FROM service ORDER BY id";
-            $result = mysqli_query($con,$get_services);
-            while($row=mysqli_fetch_assoc($result)){
-                $id = $row['id'];
-                $title = $row['title'];
-                $description = $row['description'];
-                $keywords = $row['keywords'];
-                $price = $row['price'];
-                $name = $row['name'];
-                $contact = $row['contact'];
-                $address = $row['address'];
-                $status = $row['status'];
-                $image1 = $row['image1'];
-                ?>
-                
-                <tr>
-                <td><?php echo $id; ?></td>
-                <td><?php echo $title; ?></td>
-                <td><?php echo $description; ?></td>
-                <td><?php echo $keywords; ?></td>
-
-                <td><img src='../assets/images/service_images/<?php echo $image1; ?>' class='service_image' style="height:150px; width:150px;"></td>
-                <td><?php echo $price; ?> -/ BDT</td>
-                <td><?php echo $name; ?></td>
-                <td><?php echo $contact; ?></td>
-                <td><?php echo $address; ?></td>
-                <td><?php echo $status; ?></td>
-                <td><a href="./index.php?edit_service=<?php echo $id; ?>" class="text-dark"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                <td><a href="./index.php?delete_service=<?php echo $id; ?>" class="text-dark"><i class="fa-solid fa-trash"></i></a></td>
-                </tr>
-
-            <?php    
+<h2 class="text-center mb-4">My Services</h2>
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Service ID</th>
+            <th>Title</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $provider_id = $_SESSION['provider_id'];
+        $stmt = $con->prepare("SELECT * FROM service WHERE provider_id = ?");
+        $stmt->bind_param("i", $provider_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows == 0){
+            echo "<tr><td colspan='5' class='text-center'>You have not added any services yet.</td></tr>";
+        } else {
+            while($row = $result->fetch_assoc()){
+                $service_id = $row['id'];
+                echo "<tr>
+                    <td>{$service_id}</td>
+                    <td>{$row['title']}</td>
+                    <td><img src='./service_images/{$row['image1']}' width='80' alt='Service Image'></td>
+                    <td>{$row['price']}</td>
+                    <td>
+                        <a href='index.php?edit_service={$service_id}' class='btn btn-sm btn-warning'><i class='fas fa-edit'></i> Edit</a>
+                        <a href='index.php?delete_service={$service_id}' class='btn btn-sm btn-danger'><i class='fas fa-trash'></i> Delete</a>
+                    </td>
+                </tr>";
             }
-            ?>
-            
-            
-        </tbody>
-    </table>
-</body>
-</html>
+        }
+        $stmt->close();
+        ?>
+    </tbody>
+</table>

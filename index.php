@@ -15,6 +15,9 @@
 
 <style>
     /* Global Styles from your template */
+    html {
+        scroll-behavior: smooth; /* Ensures smooth scrolling */
+    }
     body {
       font-family: "Open Sans", sans-serif;
       background-color: #f8f9fa;
@@ -132,7 +135,6 @@
         <h1 class="display-4">Need Help at Home?</h1>
         <p>Find trusted local professionals for any home service you need. Fast, reliable, and just a click away.</p>
         
-        <!-- LOGIC CHANGE: Form now submits to this page (index.php) to apply the filter -->
         <form class="d-flex hero-search-form" role="search" action="index.php" method="GET">
             <select class="form-select me-2" name="zone_id" aria-label="Select Location" required>
                 <option selected disabled value="">Select your location...</option>
@@ -172,25 +174,22 @@
     </div>
 </section>
 
-<!-- DESIGN CHANGE: Added the category and service sections back to the homepage -->
-<section class="main-content bg-white py-5">
+<!-- LOGIC CHANGE: Added an id to this section for scrolling -->
+<section id="category-section" class="main-content bg-white py-5">
     <div class="container">
         <h2 class="section-title">Browse by Category</h2>
         <div class="category-filters">
             <?php
-                // This "All Services" button now keeps the zone filter
                 $zone_param = isset($_GET['zone_id']) ? 'zone_id=' . (int)$_GET['zone_id'] : '';
                 $all_active = !isset($_GET['category']) ? 'active' : '';
                 echo "<a href='index.php?$zone_param' class='btn $all_active'>All Services</a>";
                 
-                // This function is now zone-aware and will show categories based on the selected zone
                 getCategory();
             ?>
         </div>
 
         <div class="row g-4 mt-4">
             <?php
-                // These functions are now zone-aware and will show services based on the selected zone and category
                 getservice();
                 getServiceByCategories();
             ?>
@@ -201,5 +200,25 @@
 
 <?php include("./includes/footer.php"); ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- LOGIC CHANGE: Added this script to handle auto-scrolling -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Create a URLSearchParams object to easily read the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Check if the 'zone_id' parameter exists in the URL
+    if (urlParams.has('zone_id')) {
+        // Find the category section element by its ID
+        const categorySection = document.getElementById('category-section');
+        
+        // If the element exists, scroll to it smoothly
+        if (categorySection) {
+            categorySection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+</script>
+
 </body>
 </html>

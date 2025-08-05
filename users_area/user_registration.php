@@ -1,6 +1,72 @@
 <?php
-include("../Includes/connect.php");
+// All PHP logic is now at the top for best practice.
+include("../includes/connect.php");
 include("../functions/common_function.php");
+
+if (isset($_POST['user_register'])) {
+    $user_username = $_POST['user_username'];
+    $user_email = $_POST['user_email'];
+    $user_password = $_POST['user_password'];
+    $confirm_user_password = $_POST['confirm_user_password'];
+    $user_address = $_POST['user_address'];
+    $user_contact = $_POST['user_contact'];
+    
+    $user_image = $_FILES['user_image']['name'];
+    $user_image_tmp = $_FILES['user_image']['tmp_name'];
+    
+    $user_ip = getIPAddress();
+
+    // Password validation
+    if ($user_password != $confirm_user_password) {
+        echo "<script>alert('Passwords do not match. Please try again.');</script>";
+        exit();
+    }
+
+    // Hash the password for security
+    $hash_password = password_hash($user_password, PASSWORD_DEFAULT);
+
+    // Check if username or email already exists using prepared statements
+    $select_query = "SELECT * FROM user_table WHERE username=? OR user_email=?";
+    $stmt = $con->prepare($select_query);
+    $stmt->bind_param("ss", $user_username, $user_email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        echo "<script>alert('Username or email already exists. Please choose another.');</script>";
+    } else {
+        // Move the uploaded image to the destination folder
+        move_uploaded_file($user_image_tmp, "./user_images/$user_image");
+
+        // Insert the new user into the database
+        $insert_query = "INSERT INTO user_table (username, user_email, user_password, user_image, user_ip, user_address, user_mobile) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt_insert = $con->prepare($insert_query);
+        $stmt_insert->bind_param("sssssss", $user_username, $user_email, $hash_password, $user_image, $user_ip, $user_address, $user_contact);
+        
+        if ($stmt_insert->execute()) {
+            echo "<script>alert('Registration successful!');</script>";
+            // Check cart items and redirect accordingly
+            $select_cart = "SELECT * FROM cart_details WHERE ip_address = ?";
+            $stmt_cart = $con->prepare($select_cart);
+            $stmt_cart->bind_param("s", $user_ip);
+            $stmt_cart->execute();
+            $result_cart = $stmt_cart->get_result();
+
+            if($result_cart->num_rows > 0){
+                $_SESSION['username'] = $user_username;
+                echo "<script>alert('You have items in your cart. Proceeding to checkout.');</script>";
+                echo "<script>window.open('checkout.php','_self');</script>";
+            } else {
+                echo "<script>window.open('user_login.php','_self');</script>";
+            }
+            $stmt_cart->close();
+        } else {
+            die(mysqli_error($con));
+        }
+        $stmt_insert->close();
+    }
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -8,300 +74,149 @@ include("../functions/common_function.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
+    <title>User Registration - Help Lagbe</title>
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS Link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
+    <!-- Font Awesome Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts Link -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <style>
-/* font start */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
-
-.open-sans-font {
-  font-family: "Open Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
-}
-
-/* font end */
-
-/* body {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F0F4FF 100%) !important;
-  margin: 0;
-  padding: 0;
-} */
-
-.logo{
-  width:70px;
-}
-
-/* card style start */
-.card-img-top{
-  height: 200px;
-}
-
-.top-bar {
-    text-align: center !important;
-    background: linear-gradient(135deg, #C4D9FF 0%, #5A8DFF 100%) !important;
-    
-}
-
-
-/* card style end */
-
-.nav-custom{
-  background: linear-gradient(135deg, #C5BAFF 0%, #8A77FF 100%) !important;
-}
-
-
-/* cart.php start */
-.cart_img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-}
-/* cart.php end */
-
-.footer-custom{
-  background: linear-gradient(135deg, #C5BAFF 0%, #8A77FF 100%) !important;
-}
-
-/* button start */
-.button-addtocart-color {
-  background: linear-gradient(135deg, #C4D9FF, #91B9FF) !important;
-  font-weight: bold;
-  color: #000;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.button-addtocart-color:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-.button-viewmore-color {
-  background-color: rgba(0, 0, 0, 0.05) !important;
-  color: #000;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.button-viewmore-color:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-
-/* button end */
-
-/* sidebar start */
-
-.side-bar{
-  height: 100%;
-  background: linear-gradient(135deg, #E8F9FF 10%, #A0D8FF 100%) !important;
-}
-.category-title{
-  background: linear-gradient(135deg, #E8F9FF 10%, #A0D8FF 100%) !important;
-  font-size: large;
-  font-weight: bold;
-
-}
-.category-item {
-  background: linear-gradient(135deg, #E8F9FF 10%, #A0D8FF 100%) !important;
-  margin: 5px;
-  border-radius: 5px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.category-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(135deg, #C4D9FF 10%, #91B9FF 100%) !important;
-  transition: all 0.3s ease;
-}
-
-/* sidebar end */
-
-
-/* card style start*/
-.card {
-  background: #ffffffcc; /* white with slight transparency */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-  padding: 20px;
-  border-radius: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(8px); /* soft blur behind card for depth */
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
-}
-
-.title-fixed {
-  height: 1.5em; /* fits 1-2 lines */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.description-fixed {
-  height: 4em; /* fits around 4-5 lines */
-  /* overflow: hidden;
-  text-overflow: ellipsis; */
-}
-
-.price{
-  font-size: large;
-  font-weight: bolder;
-}
-
-/* card style end */
-
+<style>
+    /* Modern Registration Page Design */
+    body {
+      font-family: "Open Sans", sans-serif;
+      background-color: #f8f9fa;
+    }
+    .register-wrapper {
+        background: url('https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=2940&auto=format&fit=crop') no-repeat center center;
+        background-size: cover;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+    .register-box {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 600px; /* Increased max-width for two-column layout */
+    }
+    .register-box h2 {
+        font-weight: 700;
+        color: #343a40;
+    }
+    .form-control {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+    }
+    .form-control:focus {
+        border-color: #5A8DFF;
+        box-shadow: 0 0 0 0.25rem rgba(90, 141, 255, 0.25);
+    }
+    .btn-primary {
+        background-color: #5A8DFF;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #4A7BDE;
+        box-shadow: 0 4px 15px rgba(90, 141, 255, 0.4);
+        transform: translateY(-2px);
+    }
 </style>
-
 </head>
-<body style="overflow-x: hidden !important;">
+<body>
 
-<div class="container-fluid m-3">
-    <h2 class="text-center">New User Registration</h2>
-    <div class="row d-flex align-items-center justify-content-center">
-        <div class="col-lg-12 col-xl-6">
-            <form action="" method="post" enctype="multipart/form-data">
-
-                <!-- Username -->
-                <div class="form-outline mb-4">
-                    <label for="user_username" class="form-label">Username</label>
-                    <input type="text" id="user_username" class="form-control" placeholder="Enter your username" autocomplete="off" required name="user_username">
-                </div>
-
-                <!-- Email -->
-                <div class="form-outline mb-4">
-                    <label for="user_email" class="form-label">Email</label>
-                    <input type="email" id="user_email" class="form-control" placeholder="Enter your email" autocomplete="off" required name="user_email">
-                </div>
-
-                <!-- User Image -->
-                <div class="form-outline mb-4">
-                    <label for="user_image" class="form-label">User Image</label>
-                    <input type="file" id="user_image" class="form-control" required name="user_image">
-                </div>
-
-                <!-- Password -->
-                <div class="form-outline mb-4">
-                    <label for="user_password" class="form-label">Password</label>
-                    <input type="password" id="user_password" class="form-control" placeholder="Enter password" autocomplete="off" required name="user_password">
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="form-outline mb-4">
-                    <label for="confirm_user_password" class="form-label">Confirm Password</label>
-                    <input type="password" id="confirm_user_password" class="form-control" placeholder="Confirm password" autocomplete="off" required name="confirm_user_password">
-                </div>
-
-                <!-- Address -->
-                <div class="form-outline mb-4">
-                    <label for="user_address" class="form-label">Address</label>
-                    <input type="text" id="user_address" class="form-control" placeholder="Enter your address" autocomplete="off" required name="user_address">
-                </div>
-
-                <!-- Contact -->
-                <div class="form-outline mb-4">
-                    <label for="user_contact" class="form-label">Contact Number</label>
-                    <input type="text" id="user_contact" class="form-control" placeholder="Enter your contact number" autocomplete="off" required name="user_contact">
-                </div>
-
-                <!-- Submit Button -->
-                <div class="mt-4 pt-2">
-                    <input type="submit" value="Register" class="button-addtocart-color py-3 px-3 border-0 w-100" name="user_register">
-                </div>
-
-                <p class="small fw-bold mt-2 pt-1 mb-0">
-                    Already have an account? <a href="user_login.php" class="text-danger">Login</a>
-                </p>
-
-            </form>
+<div class="register-wrapper">
+    <div class="register-box">
+        <div class="text-center">
+            <a href="../index.php">
+                <img src="../assets/images/logo.png" alt="Logo" class="mb-3" style="width: 70px;">
+            </a>
+            <h2 class="mb-4">Create an Account</h2>
         </div>
+        
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Username -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="user_username" placeholder="Enter your username" autocomplete="off" required name="user_username">
+                        <label for="user_username">Username</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Email -->
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="user_email" placeholder="Enter your email" autocomplete="off" required name="user_email">
+                        <label for="user_email">Email</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Image -->
+            <div class="mb-3">
+                 <label for="user_image" class="form-label">Profile Picture</label>
+                <input type="file" class="form-control" id="user_image" required name="user_image">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Password -->
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="user_password" placeholder="Enter password" autocomplete="off" required name="user_password">
+                        <label for="user_password">Password</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Confirm Password -->
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="confirm_user_password" placeholder="Confirm password" autocomplete="off" required name="confirm_user_password">
+                        <label for="confirm_user_password">Confirm Password</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Address -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="user_address" placeholder="Enter your address" autocomplete="off" required name="user_address">
+                        <label for="user_address">Address</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Contact -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="user_contact" placeholder="Enter your contact number" autocomplete="off" required name="user_contact">
+                        <label for="user_contact">Contact Number</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 mt-2">
+                <button type="submit" class="btn btn-primary py-2" name="user_register">Register</button>
+            </div>
+            <p class="small fw-bold text-center mt-3 pt-1 mb-0">
+                Already have an account? <a href="user_login.php" style="color: #5A8DFF; text-decoration: none;">Login</a>
+            </p>
+        </form>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
-
-<?php
-if (isset($_POST['user_register'])) {
-    $user_username = $_POST['user_username'];
-    $user_email = $_POST['user_email'];
-    $user_image = $_FILES['user_image']['name'];
-    $user_image_tmp = $_FILES['user_image']['tmp_name'];
-    $user_password = $_POST['user_password'];
-    $confirm_user_password = $_POST['confirm_user_password'];
-    $user_address = $_POST['user_address'];
-    $user_contact = $_POST['user_contact'];
-    $user_ip = getIPAddress();
-    $user_shipping_address = $user_address;
-
-    // Check if passwords not match
-    if ($user_password !== $confirm_user_password) {
-        echo "<script>alert('Passwords do not match. Please try again.');</script>";
-        exit();
-    }
-
-    // password hashing
-
-    $hash_password = password_hash($user_password,PASSWORD_DEFAULT); 
-
-    // Move uploaded image
-    move_uploaded_file($user_image_tmp, "../assets/images/user_images/$user_image");
-
-    //select query
-
-    $select_query = "SELECT * FROM user_table WHERE username='$user_username' OR user_email='$user_email'";
-    $result=mysqli_query($con,$select_query);
-    $rows_count=mysqli_num_rows($result);
-
-    if($rows_count>0){
-        echo "<script>alert('User already exist');</script>";
-    }
-    else{
-    // Insert query
-    $insert_query = "INSERT INTO user_table (username, user_email, user_password, user_image, user_ip, user_address, user_shipping_address, user_mobile) 
-    VALUES ('$user_username', '$user_email', '$hash_password', '$user_image', '$user_ip', '$user_address', '$user_shipping_address', '$user_contact')";
-
-    $sql_execute = mysqli_query($con, $insert_query);
-
-    if ($sql_execute) {
-        echo "<script>alert('Data inserted successfully');</script>";
-    }else {
-        die(mysqli_error($con));
-    }
-    }
-
-    //selecting cart items
-
-    $select_cart = "SELECT * FROM cart_details WHERE ip_address ='$user_ip'";
-    $result_cart = mysqli_query($con,$select_cart);
-    $rows_count = mysqli_num_rows($result_cart);
-
-    if($rows_count>0){
-        $_SESSION['username']=$user_username;
-        echo "<script>alert('You have items in your cart');</script>";
-        echo "<script>window.open('checkout.php','_self');</script>";
-    }
-    else{
-        echo "<script>window.open('../index.php','_self');</script>";
-    }
-}
-?>

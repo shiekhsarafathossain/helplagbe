@@ -7,7 +7,7 @@ session_start();
 if (!isset($_SESSION['username'])) {
     echo "<script>alert('Please login to book a service.')</script>";
     // You might need to adjust the path to your login page
-    echo "<script>window.open('./user_area/user_login.php', '_self')</script>"; 
+    echo "<script>window.open('./users_area/user_login.php', '_self')</script>"; 
     exit(); // Stop the script from running further
 }
 
