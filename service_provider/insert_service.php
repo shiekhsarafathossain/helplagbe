@@ -6,6 +6,7 @@ if(isset($_POST['insert_service'])){
     $service_price = $_POST['service_price'];
     $category_id = $_POST['category_id'];
     $zone_id = $_POST['zone_id'];
+    $keywords = $_POST['keywords'];
     $provider_id = $_SESSION['provider_id']; // Get provider ID from session
 
     // Process all three images
@@ -24,8 +25,8 @@ if(isset($_POST['insert_service'])){
     move_uploaded_file($tmp_image3, "../assets/images/service_images/$service_image3");
 
     // Insert query updated for three images
-    $stmt = $con->prepare("INSERT INTO service (title, description, image1, image2, image3, price, category_id, zone_id, provider_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssiiii", $service_title, $service_desc, $service_image1, $service_image2, $service_image3, $service_price, $category_id, $zone_id, $provider_id);
+    $stmt = $con->prepare("INSERT INTO service (title, description, keywords, image1, image2, image3, price, category_id, zone_id, provider_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssdiii", $service_title, $service_desc, $keywords, $service_image1, $service_image2, $service_image3, $service_price, $category_id, $zone_id, $provider_id);
     
     if($stmt->execute()){
         echo "<script>alert('Service has been inserted successfully.')</script>";
@@ -52,6 +53,12 @@ if(isset($_POST['insert_service'])){
             <label for="service_price" class="form-label">Service Price</label>
             <input type="text" name="service_price" id="service_price" class="form-control" required>
         </div>
+        <!-- Keywords -->
+        <div class="form-outline mb-4 w-50 m-auto">
+            <label for="keywords" class="form-label">Keywords</label>
+            <input type="text" id="keywords" name="keywords" class="form-control" placeholder="Keywords (comma separated)" required>
+        </div>
+
         <!-- Category -->
         <div class="form-outline mb-4 w-50 m-auto">
             <select name="category_id" class="form-select" required>
