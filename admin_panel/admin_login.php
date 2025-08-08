@@ -70,7 +70,7 @@ if(isset($_POST['user_login'])){
     $user_password = $_POST['user_password'];
 
     // Use prepared statements to prevent SQL injection
-    $select_query = "SELECT * FROM admin_table WHERE username = ? AND admin = 'yes'";
+    $select_query = "SELECT * FROM admin_table WHERE username = ?";
     $stmt = $con->prepare($select_query);
     $stmt->bind_param("s", $user_username);
     $stmt->execute();

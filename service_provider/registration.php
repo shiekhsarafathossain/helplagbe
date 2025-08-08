@@ -10,6 +10,9 @@ if (isset($_POST['provider_register'])) {
     $confirm_password = $_POST['confirm_password'];
     $provider_address = $_POST['provider_address'];
     $provider_contact = $_POST['provider_contact'];
+
+    $provider_nid = $_FILES['provider_nid']['name'];
+    $provider_nid_tmp = $_FILES['provider_nid']['tmp_name'];
     
     $provider_image = $_FILES['provider_image']['name'];
     $provider_image_tmp = $_FILES['provider_image']['tmp_name'];
@@ -33,13 +36,14 @@ if (isset($_POST['provider_register'])) {
     if ($result->num_rows > 0) {
         echo "<script>alert('A provider with this email already exists.');</script>";
     } else {
-        // Move the uploaded image to a dedicated folder
+        // Move the uploaded image and NID to their respective folders
         move_uploaded_file($provider_image_tmp, "../assets/images/provider_images/$provider_image");
+        move_uploaded_file($provider_nid_tmp, "../assets/images/provider_images/nid/$provider_nid");
 
         // Insert the new provider into the database
-        $insert_query = "INSERT INTO service_provider (provider_name, provider_email, provider_password, provider_image, provider_contact, provider_address) VALUES (?, ?, ?, ?, ?, ?)";
+        $insert_query = "INSERT INTO service_provider (provider_name, provider_email, provider_password, provider_image, provider_nid, provider_contact, provider_address) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert = $con->prepare($insert_query);
-        $stmt_insert->bind_param("ssssss", $provider_name, $provider_email, $hash_password, $provider_image, $provider_contact, $provider_address);
+        $stmt_insert->bind_param("sssssss", $provider_name, $provider_email, $hash_password, $provider_image, $provider_nid, $provider_contact, $provider_address);
         
         if ($stmt_insert->execute()) {
             echo "<script>alert('Registration successful! Please login.');</script>";
@@ -52,6 +56,7 @@ if (isset($_POST['provider_register'])) {
     $stmt->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -123,6 +128,11 @@ if (isset($_POST['provider_register'])) {
             <div class="mb-3">
                  <label for="provider_image" class="form-label">Profile Picture</label>
                 <input type="file" class="form-control" id="provider_image" required name="provider_image">
+            </div>
+
+            <div class="mb-3">
+                 <label for="provider_nid" class="form-label">NID Card Picture</label>
+                <input type="file" class="form-control" id="provider_nid" required name="provider_nid">
             </div>
 
             <div class="row">

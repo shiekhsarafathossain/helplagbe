@@ -200,7 +200,7 @@ body {
         <div class="col-lg-8 col-md-10">
             <div class="card shadow-sm border-0 rounded-lg">
                 <div class="card-body p-4 p-md-5">
-                    <h3 class="text-center mb-4">Admin & Staff Registration</h3>
+                    <h3 class="text-center mb-4">Admin Registration</h3>
                     <hr class="my-4">
                     <form action="" method="post">
                         <!-- Username -->

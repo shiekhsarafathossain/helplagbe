@@ -28,8 +28,19 @@ if(isset($_POST['update_profile'])){
         $provider_image = $old_image;
     }
 
-    $stmt = $con->prepare("UPDATE service_provider SET provider_name=?, provider_email=?, provider_contact=?, provider_address=?, provider_image=? WHERE provider_id=?");
-    $stmt->bind_param("sssssi", $provider_name, $provider_email, $provider_contact, $provider_address, $provider_image, $provider_id);
+    $new_image_nid = $_FILES['provider_nid']['name'];
+    $old_image_nid = $_POST['old_image_nid'];
+
+    if(!empty($new_image)){
+        $provider_nid = $new_image;
+        $provider_nid_tmp = $_FILES['provider_nid']['tmp_name'];
+        move_uploaded_file($provider_image_tmp, "../assets/images/provider_images/nid/$provider_nid");
+    } else {
+        $provider_nid = $old_image_nid;
+    }
+
+    $stmt = $con->prepare("UPDATE service_provider SET provider_name=?, provider_email=?, provider_contact=?, provider_address=?, provider_image=?, provider_nid=? WHERE provider_id=?");
+    $stmt->bind_param("ssssssi", $provider_name, $provider_email, $provider_contact, $provider_address, $provider_image, $provider_nid, $provider_id);
     if($stmt->execute()){
         echo "<script>alert('Profile updated successfully.')</script>";
         // Update session name in case it was changed
@@ -77,7 +88,22 @@ $stmt_fetch->close();
                              <label for="provider_image" class="form-label">Update Profile Picture</label>
                             <input type="file" name="provider_image" class="form-control">
                         </div>
+
                     </div>
+
+                    <div class="row">
+                        
+
+                        <div class="col-md-6 mb-3">
+                            <img src="../assets/images/provider_images/nid/<?php echo $provider_data['provider_nid']; ?>" alt="Provider Nid" style="width: 200px; height: 120px; object-fit: cover;">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="provider_nid" class="form-label">Update NID Card Picture</label>
+                            <input type="file" name="provider_nid" class="form-control">
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label for="provider_address" class="form-label">Address</label>
                         <textarea name="provider_address" class="form-control" rows="3"><?php echo $provider_data['provider_address']; ?></textarea>

@@ -165,6 +165,7 @@ body {
                     <li class='nav-item'><a href='./index.php?list_bookings' class='nav-link'><i class="fas fa-calendar-alt fa-fw"></i>View Bookings</a></li>
                     <li class='nav-item'><a href='./index.php?list_payments' class='nav-link'><i class="fas fa-credit-card fa-fw"></i>View Payments</a></li>
                     <li class='nav-item'><a href='./index.php?list_users' class='nav-link'><i class="fas fa-users fa-fw"></i>View Users</a></li>
+                    <li class='nav-item'><a href='./index.php?list_service_provider' class='nav-link'><i class="fas fa-users fa-fw"></i>View Service Provider</a></li>
                     <li class='nav-item'><a href='./admin_registration.php' class='nav-link'><i class="fas fa-user-plus fa-fw"></i>Register Admin</a></li>
                 </ul>
             </div>
@@ -186,6 +187,9 @@ body {
 
                         $total_users_query = mysqli_query($con, "SELECT COUNT(*) as count FROM user_table");
                         $total_users = mysqli_fetch_assoc($total_users_query)['count'];
+
+                        $total_provider_query = mysqli_query($con, "SELECT COUNT(*) as count FROM service_provider");
+                        $total_provider = mysqli_fetch_assoc($total_provider_query)['count'];
                         
                         echo "
                         <h2 class='text-center mb-4'>Dashboard Overview</h2>
@@ -234,6 +238,17 @@ body {
                                     </div>
                                 </div>
                             </div>
+                            <div class='col-md-6 col-lg-6'>
+                                <div class='card dashboard-card bg-dark text-white'>
+                                    <div class='card-body'>
+                                        <div>
+                                            <h5 class='card-title'>Total Service Provider</h5>
+                                            <p class='card-text fs-2 fw-bold'>{$total_provider}</p>
+                                        </div>
+                                        <i class='fas fa-users card-icon'></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>";
                     }
                     
@@ -246,6 +261,7 @@ body {
                     if(isset($_GET["delete_category"])){ include("delete_category.php"); }
                     if(isset($_GET["list_payments"])){ include("list_payments.php"); }
                     if(isset($_GET["list_users"])){ include("list_users.php"); }
+                    if(isset($_GET["list_service_provider"])){ include("list_service_provider.php"); }
                     if(isset($_GET["list_bookings"])){ include("list_booking.php"); }
                     if(isset($_GET["edit_booking"])){ include("edit_booking.php"); }
                     if(isset($_GET["delete_booking"])){ include("delete_booking.php"); }
