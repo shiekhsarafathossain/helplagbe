@@ -69,7 +69,7 @@ if (isset($_POST['user_register'])) {
       background-color: #f8f9fa;
     }
     .register-wrapper {
-        background: url('https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=2940&auto=format&fit=crop') no-repeat center center;
+        background: url('../assets/images/background.png') no-repeat center center;
         background-size: cover;
         min-height: 100vh;
         display: flex;
@@ -121,7 +121,7 @@ if (isset($_POST['user_register'])) {
     <div class="register-box">
         <div class="text-center">
             <a href="../index.php">
-                <img src="../assets/images/logo.png" alt="Logo" class="mb-3" style="width: 70px;">
+                <img src="../assets/images/logo_website.png" alt="Logo" class="mb-3" style="width: 70px;">
             </a>
             <h2 class="mb-4">Create an Account</h2>
         </div>

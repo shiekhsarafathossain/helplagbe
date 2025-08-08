@@ -8,29 +8,13 @@ include("../Includes/connect.php");
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Service Provider Login</title>
+  <title>Admin Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500">
 
   <div class="flex w-4/5 max-w-5xl rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200">
     <!-- Left side: image with overlay and gradient text background -->
-    <div class="relative w-1/2 hidden md:flex flex-col justify-center items-center px-12 bg-gradient-to-tr from-purple-700 via-indigo-800 to-pink-700 text-white">
-      <h1 class="text-5xl font-extrabold mb-4 drop-shadow-lg">
-        Welcome Back,
-      </h1>
-      <h1 class="text-5xl font-extrabold mb-4 drop-shadow-lg">
-        Service Provider
-      </h1>
- 
-      <div class="mt-10 w-full rounded-lg overflow-hidden shadow-lg">
-        <!-- <img 
-          src="https://source.unsplash.com/600x400/?technology,abstract,cyber"
-          alt="Tech Abstract"
-          class="w-full h-auto object-cover brightness-90 hover:brightness-110 transition duration-500"
-        /> -->
-      </div>
-    </div>
 
     <!-- Right side: login form -->
     <div class="w-full md:w-1/2 bg-white/90 backdrop-blur-md p-14 flex flex-col justify-center rounded-r-3xl shadow-lg">

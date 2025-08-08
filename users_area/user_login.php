@@ -55,7 +55,7 @@ if(isset($_POST['user_login'])){
       background-color: #f8f9fa;
     }
     .login-wrapper {
-        background: url('https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=2940&auto=format&fit=crop') no-repeat center center;
+        background: url('../assets/images/background.png') no-repeat center center;
         background-size: cover;
         min-height: 100vh;
         display: flex;
@@ -106,7 +106,7 @@ if(isset($_POST['user_login'])){
 <div class="login-wrapper">
     <div class="login-box text-center">
         <a href="../index.php">
-            <img src="../assets/images/logo.png" alt="Logo" class="mb-4" style="width: 80px;">
+            <img src="../assets/images/logo_website.png" alt="Logo" class="mb-4" style="width: 80px;">
         </a>
         <h2 class="mb-4">Welcome Back!</h2>
         <form action="" method="post">

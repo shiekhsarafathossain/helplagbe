@@ -59,7 +59,7 @@ include("../functions/common_function.php");
     <!-- Top Navbar -->
     <nav class="navbar navbar-expand-lg admin-navbar sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.php"><img src="../assets/images/logo.png" alt="logo" style="height:40px;"></a>
+            <a class="navbar-brand" href="index.php"><img src="../assets/images/logo_website.png" alt="logo" style="height:40px;"></a>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Welcome, <?php echo $_SESSION['provider_name']; ?></a>

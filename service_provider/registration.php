@@ -68,7 +68,7 @@ if (isset($_POST['provider_register'])) {
       font-family: "Open Sans", sans-serif;
     }
     .register-wrapper {
-        background: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2940&auto=format&fit=crop') no-repeat center center;
+        background: url('../assets/images/background.png') no-repeat center center;
         background-size: cover;
         min-height: 100vh;
         display: flex;
@@ -99,7 +99,7 @@ if (isset($_POST['provider_register'])) {
     <div class="register-box">
         <div class="text-center">
             <a href="../index.php">
-                <img src="../assets/images/logo.png" alt="Logo" class="mb-3" style="width: 70px;">
+                <img src="../assets/images/logo_website.png" alt="Logo" class="mb-3" style="width: 70px;">
             </a>
             <h2 class="mb-4">Become a Provider</h2>
         </div>

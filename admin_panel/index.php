@@ -124,7 +124,7 @@ body {
     <nav class="navbar navbar-expand-lg admin-navbar sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php">
-                <img src="../assets/images/logo.png" alt="logo" class="logo">
+                <img src="../assets/images/logo_website.png" alt="logo" class="logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

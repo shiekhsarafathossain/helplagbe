@@ -18,7 +18,7 @@ include("../functions/common_function.php");
       font-family: "Open Sans", sans-serif;
     }
     .login-wrapper {
-        background: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2940&auto=format&fit=crop') no-repeat center center;
+        background: url('../assets/images/background.png') no-repeat center center;
         background-size: cover;
         min-height: 100vh;
         display: flex;
@@ -46,7 +46,7 @@ include("../functions/common_function.php");
 
 <div class="login-wrapper">
     <div class="login-box text-center">
-        <img src="../assets/images/logo.png" alt="Logo" class="mb-4" style="width: 80px;">
+        <img src="../assets/images/logo_website.png" alt="Logo" class="mb-4" style="width: 80px;">
         <h2 class="mb-4">Provider Login</h2>
         <form action="" method="post">
             <div class="form-floating mb-3">
