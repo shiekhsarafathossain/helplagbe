@@ -265,6 +265,7 @@ body {
                     if(isset($_GET["list_bookings"])){ include("list_booking.php"); }
                     if(isset($_GET["edit_booking"])){ include("edit_booking.php"); }
                     if(isset($_GET["delete_booking"])){ include("delete_booking.php"); }
+                    if(isset($_GET['edit_provider_status'])){ include('edit_provider_status.php'); }
                 ?>
             </main>
             <!-- Main Content End -->

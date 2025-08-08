@@ -197,7 +197,7 @@ function view_details(){
     $contact = $row['provider_contact'];
     $address = $row['provider_address'];
     $price = $row['price'];
-    $status = $row['status'];  // New status variable
+    $status = $row['status'];  // verified status
 
     echo "
       <div class='bg-white p-4 rounded shadow-sm'>
@@ -274,66 +274,4 @@ function getIPAddress() {
     return $ip;
 }
 
-// function cart(){
-//   if(isset($_GET['book'])){
-//     global $con;
-//     $get_ip_address = getIPAddress();
-//     $get_product_id = $_GET['book'];
-//     $select_query = "SELECT * FROM cart_details WHERE ip_address='$get_ip_address' and product_id=$get_product_id";
-//     $result_query = mysqli_query($con, $select_query);
-//     $numOfRows = mysqli_num_rows($result_query);
-//     if($numOfRows>0){
-//         echo "<script>alert('Item already present inside cart')</script>";
-//         echo "<script>window.open('index.php','_self')</script>";
-//     }
-//     else{
-//       $insert_query = "INSERT INTO cart_details (product_id, ip_address,quantity) VALUES ($get_product_id,'$get_ip_address',1)";
-//       $result_query = mysqli_query($con, $insert_query);
-//       echo "<script>alert('Item is added to cart')</script>";
-//       echo "<script>window.open('index.php','_self')</script>";
-//     }
-//   }
-// }
-
-// function cart_item(){
-//   if(isset($_GET['add_to_cart'])){
-//     global $con;
-//     $get_ip_address = getIPAddress();
-//     $select_query = "SELECT * FROM cart_details WHERE ip_address='$get_ip_address'";
-//     $result_query = mysqli_query($con, $select_query);
-//     $count_cart_items=mysqli_num_rows($result_query);
-//   }
-//   else{
-//     global $con;
-//     $get_ip_address = getIPAddress();
-//     $select_query = "SELECT * FROM cart_details WHERE ip_address='$get_ip_address'";
-//     $result_query = mysqli_query($con, $select_query);
-//     $count_cart_items=mysqli_num_rows($result_query);
-//     }
-//     echo $count_cart_items;
-// }
-
-function get_user_order_details(){
-  global $con;
-  if(isset($_SESSION['username'])){
-      $username = $_SESSION['username'];
-      $get_details = "SELECT * FROM user_table WHERE username='$username'";
-      $result_query = mysqli_query($con,$get_details);
-      while($row_query=mysqli_fetch_array($result_query)){
-        $user_id = $row_query['user_id'];
-        if(!isset($_GET['edit_account']) && !isset($_GET['my_orders']) && !isset($_GET['delete_account'])){
-          $get_orders="SELECT * FROM user_orders WHERE user_id=$user_id AND order_status='pending'";
-          $result_orders_query = mysqli_query($con,$get_orders);
-          $row_count = mysqli_num_rows($result_orders_query);
-          if($row_count>0){
-            echo "<h3 class='text-center my-4'>You have <span class='text-danger'>$row_count</span> pending orders.</h3>
-            <p class='text-center'><a href='profile.php?my_orders' class='text-primary fw-bold'>View Order Details</a></p>";
-          } else {
-            echo "<h3 class='text-center my-4'>You have no pending orders.</h3>
-            <p class='text-center'><a href='../index.php' class='text-success fw-bold'>Explore Services</a></p>";
-          }
-        }
-      }
-  }
-}
 ?>
