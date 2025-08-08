@@ -58,7 +58,7 @@ body {
 /* === MODERN SIDEBAR === */
 .admin-sidebar {
     background-color: #2c3e50; /* Dark blue-grey background */
-    min-height: 100%;
+    min-height: 100vh;
     padding-top: 1rem;
 }
 .admin-sidebar .category-title h3 {
@@ -159,7 +159,6 @@ body {
                     <li class="nav-item category-title">
                         <h3 class="fw-bold">Dashboard</h3>
                     </li>
-                    <li class='nav-item'><a href='insert_service.php' class='nav-link'><i class="fas fa-plus-circle fa-fw"></i>Insert Service</a></li>
                     <li class='nav-item'><a href='index.php?view_services' class='nav-link'><i class="fas fa-eye fa-fw"></i>View Services</a></li>
                     <li class='nav-item'><a href='index.php?insert_category' class='nav-link'><i class="fas fa-folder-plus fa-fw"></i>Insert Category</a></li>
                     <li class='nav-item'><a href='./index.php?view_categories' class='nav-link'><i class="fas fa-folder-open fa-fw"></i>View Categories</a></li>
@@ -241,7 +240,6 @@ body {
                     // Your existing PHP logic for including other pages remains unchanged
                     if(isset($_GET["insert_category"])){ include("insert_categories.php"); }
                     if(isset($_GET["view_services"])){ include("view_services.php"); }
-                    if(isset($_GET["edit_service"])){ include("edit_service.php"); }
                     if(isset($_GET["delete_service"])){ include("delete_service.php"); }
                     if(isset($_GET["view_categories"])){ include("view_categories.php"); }
                     if(isset($_GET["edit_category"])){ include("edit_category.php"); }

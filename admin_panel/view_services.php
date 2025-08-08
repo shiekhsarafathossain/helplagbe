@@ -30,7 +30,6 @@
                                         <th>Price (BDT)</th>
                                         <th>Provider Name</th>
                                         <th>Status</th>
-                                        <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
                                 </thead>
@@ -58,11 +57,6 @@
                                         <td><?php echo number_format($price, 2); ?></td>
                                         <td><?php echo $name; ?></td>
                                         <td><?php echo $status == 'true' ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>'; ?></td>
-                                        <td>
-                                            <a href="./index.php?edit_service=<?php echo $id; ?>" class="text-primary">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
-                                        </td>
                                         <td>
                                             <a href="./index.php?delete_service=<?php echo $id; ?>" class="text-danger" onclick="return confirm('Are you sure you want to delete this service?');">
                                                 <i class="fa-solid fa-trash"></i>
