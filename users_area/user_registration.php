@@ -43,6 +43,15 @@ if (isset($_POST['user_register'])) {
         $stmt_insert = $con->prepare($insert_query);
         $stmt_insert->bind_param("sssssss", $user_username, $user_email, $hash_password, $user_image, $user_ip, $user_address, $user_contact);
         
+        if ($stmt_insert->execute()) {
+            echo "<script>alert('Registration successful! Please login.');</script>";
+            echo "<script>window.open('user_login.php','_self')</script>";
+        } else {
+            // It's good practice to log the actual error for debugging
+            error_log("User registration failed: " . $stmt_insert->error);
+            echo "<script>alert('An error occurred during registration. Please try again later.');</script>";
+        }
+        $stmt_insert->close();
     }
     $stmt->close();
 }
