@@ -179,12 +179,12 @@ if (isset($_POST['confirm_booking'])) {
                             <img src="./assets/images/service_images/<?php echo $service_image; ?>" class="img-fluid rounded me-3" alt="<?php echo $service_title; ?>">
                             <div>
                                 <h5 class="mb-1 fw-bold"><?php echo $service_title; ?></h5>
-                                <p class="mb-0 text-muted">Service Fee</p>
+                                <!-- <p class="mb-0 text-muted">Service Fee - 0 </p> -->
                             </div>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between align-items-center">
-                            <p class="mb-0 h5">Total Price:</p>
+                            <p class="mb-0 h5">Service Fee:</p>
                             <p class="mb-0 price-display">BDT <?php echo number_format($service_price, 2); ?></p>
                         </div>
                     </div>

@@ -34,7 +34,7 @@ if (isset($_POST['provider_register'])) {
         echo "<script>alert('A provider with this email already exists.');</script>";
     } else {
         // Move the uploaded image to a dedicated folder
-        move_uploaded_file($provider_image_tmp, "./provider_images/$provider_image");
+        move_uploaded_file($provider_image_tmp, "../assets/images/provider_images/$provider_image");
 
         // Insert the new provider into the database
         $insert_query = "INSERT INTO service_provider (provider_name, provider_email, provider_password, provider_image, provider_contact, provider_address) VALUES (?, ?, ?, ?, ?, ?)";

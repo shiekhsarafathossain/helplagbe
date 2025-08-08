@@ -47,6 +47,12 @@ include("../functions/common_function.php");
         width: 1.25em;
         margin-right: 0.75rem;
     }
+    .admin-footer {
+    background-color: #2c3e50;
+    color: #bdc3c7;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    }
 </style>
 </head>
 <body>
@@ -66,22 +72,23 @@ include("../functions/common_function.php");
     </nav>
 
     <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2 p-0">
-                <ul class="navbar-nav admin-sidebar">
-                    <li class="nav-item p-3">
-                        <h3 class="fw-bold text-white">Dashboard</h3>
-                    </li>
-                    <li class='nav-item'><a href='index.php?insert_service' class='nav-link'><i class="fas fa-plus-circle fa-fw"></i>Insert Service</a></li>
-                    <li class='nav-item'><a href='index.php?view_services' class='nav-link'><i class="fas fa-eye fa-fw"></i>View My Services</a></li>
-                    <li class='nav-item'><a href='index.php?view_bookings' class='nav-link'><i class="fas fa-calendar-alt fa-fw"></i>View My Bookings</a></li>
-                </ul>
-            </div>
+  <div class="row">
+    <!-- Left Side (2 columns) -->
+    <div class="col-md-2 admin-sidebar p-4">
+      <ul class="navbar-nav admin-sidebar">
+            <li class="nav-item p-3">
+                <h3 class="fw-bold text-white">Dashboard</h3>
+            </li>
+            <li class='nav-item'><a href='index.php?profile' class='nav-link'><i class="fas fa-box fa-fw"></i>My Profile</a></li>
+            <li class='nav-item'><a href='index.php?insert_service' class='nav-link'><i class="fas fa-plus-circle fa-fw"></i>Insert Service</a></li>
+            <li class='nav-item'><a href='index.php?view_services' class='nav-link'><i class="fas fa-eye fa-fw"></i>View My Services</a></li>
+            <li class='nav-item'><a href='index.php?view_bookings' class='nav-link'><i class="fas fa-calendar-alt fa-fw"></i>View My Bookings</a></li>
+        </ul>
+    </div>
 
-            <!-- Main Content -->
-            <main class="col-md-10 ms-sm-auto px-md-4 pt-4">
-                <?php
+    <!-- Right Side (10 columns) -->
+    <div class="col-md-10 bg-light p-4">
+      <?php
                     // Routing logic to include the correct page content
                     if(isset($_GET['insert_service'])){
                         include('insert_service.php');
@@ -95,13 +102,25 @@ include("../functions/common_function.php");
                         include('view_bookings.php');
                     } elseif(isset($_GET['edit_booking'])){
                         include('edit_booking.php');
+                    }
+                    elseif(isset($_GET['profile'])){
+                        include('profile.php');
                     } else {
                         // Default view when no other page is selected
                         include('view_bookings.php');
                     }
                 ?>
-            </main>
-        </div>
     </div>
+  </div>
+</div>     
+
+<!-- Footer Start -->
+<footer class="admin-footer text-center">
+    <div class="container">
+        <p class="mb-0">&copy; <?php echo date("Y"); ?> Help Lagbe - All Rights Reserved.</p>
+    </div>
+</footer>
+<!-- Footer End -->
+
 </body>
 </html>

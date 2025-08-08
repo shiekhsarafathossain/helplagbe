@@ -18,8 +18,6 @@ if(isset($_POST['insert_service'])){
     $tmp_image2 = $_FILES['service_image2']['tmp_name'];
     $tmp_image3 = $_FILES['service_image3']['tmp_name'];
 
-    // Move uploaded files to the correct directory
-    // Note: The path is corrected to go up one level from the 'service_provider' folder.
     move_uploaded_file($tmp_image1, "../assets/images/service_images/$service_image1");
     move_uploaded_file($tmp_image2, "../assets/images/service_images/$service_image2");
     move_uploaded_file($tmp_image3, "../assets/images/service_images/$service_image3");

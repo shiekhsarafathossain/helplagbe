@@ -10,15 +10,18 @@ if (isset($_GET['edit_service'])) {
     $stmt->bind_param("ii", $edit_id, $provider_id);
     $stmt->execute();
     $result = $stmt->get_result();
+
     if ($result->num_rows == 0) {
         echo "<script>alert('Unauthorized access or service not found.'); window.open('index.php?view_services','_self');</script>";
         exit();
     }
+
     $row = $result->fetch_assoc();
 }
 
 // Handle the form submission to update the service
 if (isset($_POST['update_service'])) {
+
     // --- Retrieve form data ---
     $service_id = $_POST['service_id'];
     $service_title = $_POST['service_title'];
@@ -27,14 +30,13 @@ if (isset($_POST['update_service'])) {
     $keywords = $_POST['keywords'];
     $category_id = $_POST['category_id'];
     $zone_id = $_POST['zone_id'];
+    $status = $_POST['status']; // New: Get status
 
     // --- Image Handling Logic ---
-    // Get old image names from hidden fields
     $old_image1 = $_POST['old_image1'];
     $old_image2 = $_POST['old_image2'];
     $old_image3 = $_POST['old_image3'];
 
-    // Get new image details from $_FILES
     $new_image1 = $_FILES['image1']['name'];
     $tmp_image1 = $_FILES['image1']['tmp_name'];
 
@@ -44,12 +46,10 @@ if (isset($_POST['update_service'])) {
     $new_image3 = $_FILES['image3']['name'];
     $tmp_image3 = $_FILES['image3']['tmp_name'];
 
-    // Decide which image name to use (new or old)
     $update_image1 = !empty($new_image1) ? $new_image1 : $old_image1;
     $update_image2 = !empty($new_image2) ? $new_image2 : $old_image2;
     $update_image3 = !empty($new_image3) ? $new_image3 : $old_image3;
-    
-    // Move uploaded files if they exist
+
     if (!empty($new_image1)) {
         move_uploaded_file($tmp_image1, "../assets/images/service_images/$update_image1");
     }
@@ -61,17 +61,19 @@ if (isset($_POST['update_service'])) {
     }
 
     // --- Database Update ---
-    $stmt_update = $con->prepare("UPDATE service SET title=?, description=?, price=?, keywords=?, category_id=?, zone_id=?, image1=?, image2=?, image3=? WHERE id=?");
-    $stmt_update->bind_param("ssssiisssi", $service_title, $service_desc, $service_price, $keywords, $category_id, $zone_id, $update_image1, $update_image2, $update_image3, $service_id);
+    $stmt_update = $con->prepare("UPDATE service SET title=?, description=?, price=?, keywords=?, category_id=?, zone_id=?, image1=?, image2=?, image3=?, status=? WHERE id=?");
+    $stmt_update->bind_param("ssssiissssi", $service_title, $service_desc, $service_price, $keywords, $category_id, $zone_id, $update_image1, $update_image2, $update_image3, $status, $service_id);
 
     if ($stmt_update->execute()) {
         echo "<script>alert('Service updated successfully.'); window.open('index.php?view_services','_self');</script>";
     } else {
         echo "<script>alert('Error updating service.');</script>";
     }
+
     $stmt_update->close();
 }
 ?>
+
 <div class="container mt-3">
     <h2 class="text-center">Edit Service</h2>
     <form action="" method="post" enctype="multipart/form-data">
@@ -84,10 +86,12 @@ if (isset($_POST['update_service'])) {
             <label for="service_title" class="form-label">Service Title</label>
             <input type="text" name="service_title" class="form-control" value="<?php echo htmlspecialchars($row['title']); ?>" required>
         </div>
+
         <div class="form-outline mb-4 w-50 m-auto">
             <label for="service_desc" class="form-label">Service Description</label>
             <textarea name="service_desc" class="form-control" rows="3" required><?php echo htmlspecialchars($row['description']); ?></textarea>
         </div>
+
         <div class="form-outline mb-4 w-50 m-auto">
             <label for="service_price" class="form-label">Service Price</label>
             <input type="text" name="service_price" class="form-control" value="<?php echo htmlspecialchars($row['price']); ?>" required>
@@ -105,7 +109,7 @@ if (isset($_POST['update_service'])) {
                 <input type="file" name="image1" class="form-control">
             </div>
         </div>
-        
+
         <div class="form-outline mb-4 w-50 m-auto">
             <label for="image2" class="form-label">Service Image 2</label>
             <div class="d-flex align-items-center">
@@ -135,6 +139,7 @@ if (isset($_POST['update_service'])) {
                 ?>
             </select>
         </div>
+
         <div class="form-outline mb-4 w-50 m-auto">
             <label for="zone_id" class="form-label">Working Zone</label>
             <select name="zone_id" class="form-select">
@@ -148,6 +153,15 @@ if (isset($_POST['update_service'])) {
                 ?>
             </select>
         </div>
+
+        <div class="form-outline mb-4 w-50 m-auto">
+            <label for="status" class="form-label">Service Status</label>
+            <select name="status" class="form-select">
+                <option value="true" <?php echo ($row['status'] === 'true') ? 'selected' : ''; ?>>Active</option>
+                <option value="false" <?php echo ($row['status'] === 'false') ? 'selected' : ''; ?>>Inactive</option>
+            </select>
+        </div>
+
         <div class="form-outline mb-4 w-50 m-auto">
             <input type="submit" name="update_service" class="btn btn-primary" value="Update Service">
         </div>

@@ -6,6 +6,7 @@
             <th>Title</th>
             <th>Image</th>
             <th>Price</th>
+            <th>Status</th> <!-- New Status column -->
             <th>Actions</th>
         </tr>
     </thead>
@@ -17,15 +18,20 @@
         $stmt->execute();
         $result = $stmt->get_result();
         if($result->num_rows == 0){
-            echo "<tr><td colspan='5' class='text-center'>You have not added any services yet.</td></tr>";
+            echo "<tr><td colspan='6' class='text-center'>You have not added any services yet.</td></tr>";
         } else {
             while($row = $result->fetch_assoc()){
                 $service_id = $row['id'];
+                $status = $row['status'] === 'true'
+                    ? "<span class='badge bg-success'>Active</span>"
+                    : "<span class='badge bg-danger'>Inactive</span>";
+                    
                 echo "<tr>
                     <td>{$service_id}</td>
                     <td>{$row['title']}</td>
                     <td><img src='./service_images/{$row['image1']}' width='80' alt='Service Image'></td>
                     <td>{$row['price']}</td>
+                    <td>{$status}</td>
                     <td>
                         <a href='index.php?edit_service={$service_id}' class='btn btn-sm btn-warning'><i class='fas fa-edit'></i> Edit</a>
                         <a href='index.php?delete_service={$service_id}' class='btn btn-sm btn-danger'><i class='fas fa-trash'></i> Delete</a>
