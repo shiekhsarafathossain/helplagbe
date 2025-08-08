@@ -36,34 +36,13 @@ if (isset($_POST['user_register'])) {
         echo "<script>alert('Username or email already exists. Please choose another.');</script>";
     } else {
         // Move the uploaded image to the destination folder
-        move_uploaded_file($user_image_tmp, "./user_images/$user_image");
+        move_uploaded_file($user_image_tmp, "../assets/images/user_images/$user_image");
 
         // Insert the new user into the database
         $insert_query = "INSERT INTO user_table (username, user_email, user_password, user_image, user_ip, user_address, user_mobile) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert = $con->prepare($insert_query);
         $stmt_insert->bind_param("sssssss", $user_username, $user_email, $hash_password, $user_image, $user_ip, $user_address, $user_contact);
         
-        if ($stmt_insert->execute()) {
-            echo "<script>alert('Registration successful!');</script>";
-            // Check cart items and redirect accordingly
-            $select_cart = "SELECT * FROM cart_details WHERE ip_address = ?";
-            $stmt_cart = $con->prepare($select_cart);
-            $stmt_cart->bind_param("s", $user_ip);
-            $stmt_cart->execute();
-            $result_cart = $stmt_cart->get_result();
-
-            if($result_cart->num_rows > 0){
-                $_SESSION['username'] = $user_username;
-                echo "<script>alert('You have items in your cart. Proceeding to checkout.');</script>";
-                echo "<script>window.open('checkout.php','_self');</script>";
-            } else {
-                echo "<script>window.open('user_login.php','_self');</script>";
-            }
-            $stmt_cart->close();
-        } else {
-            die(mysqli_error($con));
-        }
-        $stmt_insert->close();
     }
     $stmt->close();
 }

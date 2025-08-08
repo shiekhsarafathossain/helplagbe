@@ -6,9 +6,8 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['username'])) {
     echo "<script>alert('Please login to book a service.')</script>";
-    // You might need to adjust the path to your login page
     echo "<script>window.open('./users_area/user_login.php', '_self')</script>"; 
-    exit(); // Stop the script from running further
+    exit();
 }
 
 // Redirect if no service is selected for booking
@@ -19,7 +18,7 @@ if (!isset($_GET['id'])) {
 
 $service_id = $_GET['id'];
 
-// Fetch service details for the summary
+// Fetch service details, including the provider_id
 $query_service = "SELECT * FROM `service` WHERE `id` = ?";
 $stmt_service = $con->prepare($query_service);
 $stmt_service->bind_param("i", $service_id);
@@ -34,6 +33,8 @@ $service_data = $service_result->fetch_assoc();
 $service_title = $service_data['title'];
 $service_price = $service_data['price'];
 $service_image = $service_data['image1'];
+// LOGIC CORRECTION: Get the provider_id from the service
+$provider_id = $service_data['provider_id']; 
 
 // Handle the booking form submission
 if (isset($_POST['confirm_booking'])) {
@@ -45,16 +46,25 @@ if (isset($_POST['confirm_booking'])) {
     $time = $_POST['time'];
     $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
     $payment_method = $_POST['payment_method'];
-    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+    
+    // LOGIC CORRECTION: Get user_id from the session username
+    $username = $_SESSION['username'];
+    $get_user_stmt = $con->prepare("SELECT user_id FROM user_table WHERE username = ?");
+    $get_user_stmt->bind_param("s", $username);
+    $get_user_stmt->execute();
+    $user_result = $get_user_stmt->get_result();
+    $user_data = $user_result->fetch_assoc();
+    $user_id = $user_data['user_id'];
 
     // Server-side validation
     if (empty($name) || empty($email) || empty($phone) || empty($date) || empty($time) || empty($location) || empty($payment_method)) {
         echo "<script>alert('Please fill in all required fields.')</script>";
     } else {
-        // Prepare and execute the insert query
-        $insert_query = "INSERT INTO `bookings` (service_id, user_id, user_name, user_email, user_phone, booking_date, booking_time, location, payment_method, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Prepare and execute the insert query, now including provider_id
+        $insert_query = "INSERT INTO `bookings` (service_id, provider_id, user_id, user_name, user_email, user_phone, booking_date, booking_time, location, payment_method, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $con->prepare($insert_query);
-        $stmt->bind_param("iisssssssd", $service_id, $user_id, $name, $email, $phone, $date, $time, $location, $payment_method, $service_price);
+        // Updated bind_param to include the two new integer IDs
+        $stmt->bind_param("iiisssssssd", $service_id, $provider_id, $user_id, $name, $email, $phone, $date, $time, $location, $payment_method, $service_price);
         
         if ($stmt->execute()) {
             echo "<script>alert('Booking successful! We will contact you soon.')</script>";
@@ -81,15 +91,11 @@ if (isset($_POST['confirm_booking'])) {
           font-family: "Open Sans", sans-serif;
           background-color: #f8f9fa;
         }
-
-        /* Card Styles */
         .card {
             border: 1px solid #e9ecef;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
-
-        /* Form Styling */
         .form-control, .form-select {
             border-radius: 8px;
             padding: 0.8rem 1rem;
@@ -97,11 +103,6 @@ if (isset($_POST['confirm_booking'])) {
         .form-control:focus, .form-select:focus {
             border-color: #5A8DFF;
             box-shadow: 0 0 0 0.25rem rgba(90, 141, 255, 0.25);
-        }
-
-        /* Booking Summary Card */
-        .booking-summary .card {
-            background-color: #ffffff;
         }
         .booking-summary img {
             width: 100px; 
@@ -113,19 +114,12 @@ if (isset($_POST['confirm_booking'])) {
             font-weight: 700;
             color: #5A8DFF;
         }
-
-        /* Button */
         .btn-primary {
             background-color: #5A8DFF;
             border: none;
             padding: 12px 25px;
             border-radius: 8px;
             font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #4A7BDE;
-            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -170,7 +164,6 @@ if (isset($_POST['confirm_booking'])) {
                             <select class="form-select" id="payment_method" name="payment_method" required>
                                 <option value="" disabled selected>Select a payment method</option>
                                 <option value="Cash on Delivery">Cash on Delivery</option>
-                                <option value="Card Payment">Card Payment (Online)</option>
                             </select>
                         </div>
                         <button type="submit" name="confirm_booking" class="btn btn-primary w-100 py-3">Confirm Booking</button>
