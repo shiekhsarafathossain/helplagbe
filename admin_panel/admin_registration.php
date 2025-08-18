@@ -147,7 +147,7 @@ body {
     <nav class="navbar navbar-expand-lg admin-navbar sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php">
-                <img src="../assets/images/logo.png" alt="logo" class="logo">
+                <img src="../assets/images/logo_website.png" alt="logo" class="logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -188,6 +188,7 @@ body {
                     <li class='nav-item'><a href='./index.php?list_bookings' class='nav-link'><i class="fas fa-calendar-alt fa-fw"></i>View Bookings</a></li>
                     <li class='nav-item'><a href='./index.php?list_payments' class='nav-link'><i class="fas fa-credit-card fa-fw"></i>View Payments</a></li>
                     <li class='nav-item'><a href='./index.php?list_users' class='nav-link'><i class="fas fa-users fa-fw"></i>View Users</a></li>
+                    <li class='nav-item'><a href='./index.php?list_service_provider' class='nav-link'><i class="fas fa-users fa-fw"></i>View Service Provider</a></li>
                     <li class='nav-item'><a href='./admin_registration.php' class='nav-link'><i class="fas fa-user-plus fa-fw"></i>Register Admin</a></li>
                 </ul>
             </div>

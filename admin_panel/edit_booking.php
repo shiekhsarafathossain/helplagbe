@@ -1,3 +1,4 @@
+<?php @session_start(); ?>
 <?php
 // This file should be included within your main admin index.php, so it has access to the $con variable.
 // Using prepared statements to prevent SQL injection

@@ -3,7 +3,7 @@
 // === SECURITY CHECK ADDED HERE ===
 // This must be at the very top of the file
     @session_start();
-    if(!isset($_SESSION['username'])){
+    if(!isset($_SESSION['admin_id'])){
     echo "<script>alert('Please login to access the admin panel.')</script>";
     echo "<script>window.open('admin_login.php','_self')</script>";
     exit();
@@ -149,6 +149,7 @@ body {
             </div>
         </div>
     </nav>
+    
     <!-- Top Navbar End -->
 
     <div class="container-fluid">

@@ -1,3 +1,4 @@
+<?php @session_start(); ?>
 <?php
 // This file is included in index.php, so $con is available.
 include("../Includes/connect.php");

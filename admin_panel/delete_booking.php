@@ -1,4 +1,6 @@
+<?php @session_start(); ?>
 <?php
+
 if(isset($_GET['delete_booking'])){
     $delete_id = $_GET['delete_booking'];
 
