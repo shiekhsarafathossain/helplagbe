@@ -1,3 +1,6 @@
+<?php
+@session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,10 +39,14 @@
 
     /* Hero Section */
     .about-hero {
-      background: linear-gradient(135deg, #5A8DFF 0%, #4A7BDE 100%);
-      padding: 5rem 1rem;
-      color: white;
+      background: linear-gradient(135deg, #2b80ff, #4eb6ff);
+      background-size: cover;
+      background-position: center;
+      padding: 60px 20px;
       text-align: center;
+      color: white;
+      border-bottom-left-radius: 60px;
+      border-bottom-right-radius: 60px;
     }
     .about-hero h1 {
       font-weight: 700;

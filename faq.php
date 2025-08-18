@@ -1,3 +1,6 @@
+<?php
+@session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FAQs - Help Lagbe?</title>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
      /* Global Styles */
@@ -37,7 +38,7 @@
         font-weight: 600;
     }
     .nav-link.active, .nav-link:hover {
-        color: #5A8DFF !important;
+    color: #5A8DFF !important;
     }
 
     /* Hero Section */

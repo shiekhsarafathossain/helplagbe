@@ -1,7 +1,7 @@
 <?php
   include("./includes/connect.php");
   include("./functions/common_function.php");
-  session_start();
+  @session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,12 +42,14 @@
         color: #5A8DFF !important;
     }
     .hero-section {
-        background: linear-gradient(135deg, rgba(90, 141, 255, 0.9), rgba(74, 123, 222, 0.95));
+        background: linear-gradient(135deg, #2b80ff, #4eb6ff);
         background-size: cover;
         background-position: center;
-        padding: 6rem 1rem;
+        padding: 60px 20px;
         text-align: center;
         color: white;
+        border-bottom-left-radius: 60px;
+        border-bottom-right-radius: 60px;
     }
     .hero-section h1 {
         font-weight: 700;

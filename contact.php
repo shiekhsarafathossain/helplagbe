@@ -1,3 +1,6 @@
+<?php
+@session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,13 +100,37 @@
       font-size: 0.92rem;
       line-height: 1.6;
     }
+    /* Hero Section */
+    .contact-hero {
+      background: linear-gradient(135deg, #2b80ff, #4eb6ff);
+      background-size: cover;
+      background-position: center;
+      padding: 60px 20px;
+      text-align: center;
+      color: white;
+      border-bottom-left-radius: 60px;
+      border-bottom-right-radius: 60px;
+    }
+    .contact-hero h1 {
+      font-weight: 700;
+      font-size: 2.8rem;
+    }
+    .contact-hero p {
+      font-size: 1.15rem;
+      max-width: 700px;
+      margin: 0 auto;
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body class="open-sans-font">
 <?php include("./includes/navbar.php"); ?>
+<section class="contact-hero">
+  <h1>The Driving Force Behind Help Lagbe?</h1>
+  <p>Meet the passionate leaders and innovators dedicated to connecting you with the quality service you deserve.</p>
 
+</section>
 <section class="container my-5 py-5">
-  <h2 class="text-center mb-5 section-title">Meet Our Team</h2>
 
   <div class="row justify-content-center g-4">
     <div class="col-md-4">
