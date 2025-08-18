@@ -1,19 +1,25 @@
-<h3 class="text-center mb-4">My Booked Services</h3>
-<table class="table table-bordered table-hover align-middle">
-    <thead class="table-dark">
-        <tr>
-            <th>#</th>
-            <th>Service Name</th>
-            <th>Service Provider</th>
-            <th>Provider Contact</th>
-            <th>Booking Date</th>
-            <th>Location</th>
-            <th>Price</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4">My Booked Services</h3>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle text-center">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Service Name</th>
+                                    <th>Service Provider</th>
+                                    <th>Provider Contact</th>
+                                    <th>Booking Date</th>
+                                    <th>Location</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
         // Get the username from the session
         $username = $_SESSION['username'];
         
@@ -65,5 +71,13 @@
         }
         $get_bookings->close();
         ?>
-    </tbody>
-</table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

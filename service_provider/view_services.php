@@ -1,17 +1,40 @@
-<h2 class="text-center mb-4">My Services</h2>
-<table class="table table-bordered table-hover">
-    <thead class="table-dark">
-        <tr>
-            <th>Service ID</th>
-            <th>Title</th>
-            <th>Image</th>
-            <th>Price</th>
-            <th>Status</th> <!-- New Status column -->
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
+<?php @session_start(); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Services</title>
+    <style>
+        .service-image-thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-3">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card shadow-sm border-0 rounded-lg">
+                    <div class="card-body p-4">
+                        <h3 class="text-center mb-4">All Services</h3>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle text-center">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>Service ID</th>
+                                        <th>Title</th>
+                                        <th>Image</th>
+                                        <th>Price</th>
+                                        <th>Status</th> <!-- New Status column -->
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
         $provider_id = $_SESSION['provider_id'];
         $stmt = $con->prepare("SELECT * FROM service WHERE provider_id = ?");
         $stmt->bind_param("i", $provider_id);
@@ -29,7 +52,7 @@
                 echo "<tr>
                     <td>{$service_id}</td>
                     <td>{$row['title']}</td>
-                    <td><img src='./service_images/{$row['image1']}' width='80' alt='Service Image'></td>
+                    <td><img src='../assets/images/service_images/{$row['image1']}' width='80' alt='Service Image'></td>
                     <td>{$row['price']}</td>
                     <td>{$status}</td>
                     <td>
@@ -41,5 +64,13 @@
         }
         $stmt->close();
         ?>
-    </tbody>
-</table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
