@@ -1,5 +1,5 @@
 <?php
-// All PHP logic is now at the top for best practice.
+
 include("../includes/connect.php");
 include("../functions/common_function.php");
 
@@ -11,17 +11,61 @@ if (isset($_POST['provider_register'])) {
     $provider_address = $_POST['provider_address'];
     $provider_contact = $_POST['provider_contact'];
 
-    $provider_nid = $_FILES['provider_nid']['name'];
+    $provider_nid_name = $_FILES['provider_nid']['name'];
     $provider_nid_tmp = $_FILES['provider_nid']['tmp_name'];
     
-    $provider_image = $_FILES['provider_image']['name'];
+    $provider_image_name = $_FILES['provider_image']['name'];
     $provider_image_tmp = $_FILES['provider_image']['tmp_name'];
 
-    // Password validation
-    if ($provider_password != $confirm_password) {
-        echo "<script>alert('Passwords do not match. Please try again.');</script>";
+    
+    // Provider Name validation
+    if (strlen($provider_name) < 5 || strlen($provider_name) > 100) {
+        echo "<script>alert('Provider name must be between 5 and 100 characters.'); window.location.href='registration.php';</script>";
+        exit();
+    } elseif (!preg_match('/^[A-Za-z][A-Za-z0-9\s]{4,99}$/', $provider_name)) {
+        echo "<script>alert('Invalid provider name. It must start with a letter and can contain letters, numbers, and spaces.'); window.location.href='registration.php';</script>";
         exit();
     }
+
+    // Password validation
+    if (strlen($provider_password) < 8 || strlen($provider_password) > 255) {
+        echo "<script>alert('Password must be between 8 and 255 characters.'); window.location.href='registration.php';</script>";
+        exit();
+    } elseif (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $provider_password)) {
+        echo "<script>alert('Password must contain at least 1 special character.'); window.location.href='registration.php';</script>";
+        exit();
+    } elseif ($provider_password === strtolower($provider_password)) {
+        echo "<script>alert('Password cannot be all lowercase. Use uppercase letters too.'); window.location.href='registration.php';</script>";
+        exit();
+    } elseif ($provider_password === strtoupper($provider_password)) {
+        echo "<script>alert('Password cannot be all uppercase. Use lowercase letters too.'); window.location.href='registration.php';</script>";
+        exit();
+    }
+
+    // Email validation
+    if (!filter_var($provider_email, FILTER_VALIDATE_EMAIL)) {
+        echo "<script>alert('Invalid email format. Please enter a valid email address.'); window.location.href='registration.php';</script>";
+        exit();
+    }
+
+    // Phone number validation
+    if (!preg_match('/^01[0-9]{9}$/', $provider_contact)) {
+        echo "<script>alert('Invalid phone number. It must be 11 digits and start with 01.'); window.location.href='registration.php';</script>";
+        exit();
+    }
+
+    //  Address validation
+    if (strlen($provider_address) > 255) {
+        echo "<script>alert('Address cannot be longer than 255 characters.'); window.location.href='registration.php';</script>";
+        exit();
+    }
+
+    // Password confirmation validation (already existed)
+    if ($provider_password != $confirm_password) {
+        echo "<script>alert('Passwords do not match. Please try again.'); window.location.href='registration.php';</script>";
+        exit();
+    }
+
 
     // Hash the password for security
     $hash_password = password_hash($provider_password, PASSWORD_DEFAULT);
@@ -34,29 +78,31 @@ if (isset($_POST['provider_register'])) {
     $result = $stmt->get_result();
     
     if ($result->num_rows > 0) {
-        echo "<script>alert('A provider with this email already exists.');</script>";
+        echo "<script>alert('A provider with this email already exists.'); window.location.href='registration.php';</script>";
+        exit();
     } else {
         // Move the uploaded image and NID to their respective folders
-        move_uploaded_file($provider_image_tmp, "../assets/images/provider_images/$provider_image");
-        move_uploaded_file($provider_nid_tmp, "../assets/images/provider_images/nid/$provider_nid");
+        move_uploaded_file($provider_image_tmp, "../assets/images/provider_images/$provider_image_name");
+        move_uploaded_file($provider_nid_tmp, "../assets/images/provider_images/nid/$provider_nid_name");
 
         // Insert the new provider into the database
         $insert_query = "INSERT INTO service_provider (provider_name, provider_email, provider_password, provider_image, provider_nid, provider_contact, provider_address) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert = $con->prepare($insert_query);
-        $stmt_insert->bind_param("sssssss", $provider_name, $provider_email, $hash_password, $provider_image, $provider_nid, $provider_contact, $provider_address);
+        $stmt_insert->bind_param("sssssss", $provider_name, $provider_email, $hash_password, $provider_image_name, $provider_nid_name, $provider_contact, $provider_address);
         
         if ($stmt_insert->execute()) {
             echo "<script>alert('Registration successful! Please login.');</script>";
             echo "<script>window.open('login.php','_self');</script>";
         } else {
-            die(mysqli_error($con));
+            // Log the actual error instead of showing it to the user
+            error_log("Provider registration failed: " . $stmt_insert->error);
+            echo "<script>alert('An error occurred during registration. Please try again later.'); window.location.href='registration.php';</script>";
         }
         $stmt_insert->close();
     }
     $stmt->close();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">

@@ -133,7 +133,7 @@
 <section class="container my-5 py-5">
 
   <div class="row justify-content-center g-4">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="team-card">
         <img src="./assets/images/team_images/sarafat.jpg" alt="Sheikh Sarafat Hossain" class="team-img">
         <h5 class="mb-1">Sheikh Sarafat Hossain</h5>
@@ -145,7 +145,7 @@
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="team-card">
         <img src="./assets/images/team_images/raya.jpeg" alt="Rijia Parveen Raya" class="team-img">
         <h5 class="mb-1">Rijia Parveen Raya</h5>
@@ -157,7 +157,7 @@
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="team-card">
         <img src="./assets/images/team_images/sadia.jpg" alt="Sadia Reza" class="team-img">
         <h5 class="mb-1">Sadia Reza</h5>
@@ -169,7 +169,7 @@
       </div>
     </div>
     
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
       <div class="team-card">
         <img src="./assets/images/team_images/raisa.jpg" alt="Wasifa Motahara Raisa" class="team-img">
         <h5 class="mb-1">Wasifa Motahara Raisa</h5>
@@ -179,9 +179,9 @@
         <hr class="my-3">
         <p class="bio-text">Focused on technical excellence and infrastructure management.</p>
       </div>
-    </div>
+    </div> -->
 
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="team-card">
         <img src="./assets/images/team_images/ferdowsi.jpg" alt="Ferdowsi Yesmin" class="team-img">
         <h5 class="mb-1">Ferdowsi Yesmin</h5>
