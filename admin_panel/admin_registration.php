@@ -268,9 +268,48 @@ if (isset($_POST['user_register'])) {
     $confirm_user_password = $_POST['confirm_user_password'];
     $user_contact = $_POST['user_contact'];
 
-    // Check if passwords match
+
+
+    // Username validation
+    if (strlen($user_username) < 5 || strlen($user_username) > 100) {
+        echo "<script>alert('Username must be between 5 and 100 characters.'); window.location.href='admin_registration.php';</script>";
+        exit();
+    } elseif (!preg_match('/^[A-Za-z][A-Za-z0-9]{4,99}$/', $user_username)) {
+        echo "<script>alert('Invalid username. It must start with a letter and contain only letters and numbers.'); window.location.href='admin_registration.php';</script>";
+        exit();
+    }
+
+    // Password validation
+    if (strlen($user_password) < 8 || strlen($user_password) > 255) {
+        echo "<script>alert('Password must be between 8 and 255 characters.'); window.location.href='admin_registration.php';</script>";
+        exit();
+    } elseif (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $user_password)) {
+        echo "<script>alert('Password must contain at least 1 special character.'); window.location.href='admin_registration.php';</script>";
+        exit();
+    } elseif ($user_password === strtolower($user_password)) {
+        echo "<script>alert('Password cannot be all lowercase. Use uppercase letters too.'); window.location.href='admin_registration.php';</script>";
+        exit();
+    } elseif ($user_password === strtoupper($user_password)) {
+        echo "<script>alert('Password cannot be all uppercase. Use lowercase letters too.'); window.location.href='admin_registration.php';</script>";
+        exit();
+    }
+    
+    // Email validation
+    if (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+        echo "<script>alert('Invalid email format. Please enter a valid email address.'); window.location.href='admin_registration.php';</script>";
+        exit();
+    }
+
+    // Phone number validation
+    if (!preg_match('/^01[0-9]{9}$/', $user_contact)) {
+        echo "<script>alert('Invalid phone number. It must be 11 digits and start with 01.'); window.location.href='admin_registration.php';</script>";
+        exit();
+    }
+
+
+    // Check if passwords match 
     if ($user_password !== $confirm_user_password) {
-        echo "<script>alert('Passwords do not match. Please try again.');</script>";
+        echo "<script>alert('Passwords do not match. Please try again.'); window.location.href='admin_registration.php';</script>";
         exit();
     }
 
@@ -285,7 +324,9 @@ if (isset($_POST['user_register'])) {
     $result = $stmt_select->get_result();
     
     if($result->num_rows > 0){
-        echo "<script>alert('Username or email already exists.');</script>";
+        // redirect
+        echo "<script>alert('Username or email already exists.'); window.location.href='admin_registration.php';</script>";
+        exit();
     } else {
         // Insert query with prepared statements
         $insert_query = "INSERT INTO admin_table (username, email, password, contact) VALUES (?, ?, ?, ?)";
@@ -296,7 +337,9 @@ if (isset($_POST['user_register'])) {
             echo "<script>alert('Registration successful!');</script>";
             echo "<script>window.open('./admin_login.php','_self')</script>";
         } else {
-            echo "<script>alert('Error during registration.');</script>";
+            //  log error
+            error_log("Admin registration failed: " . $stmt_insert->error);
+            echo "<script>alert('An error occurred during registration. Please try again later.'); window.location.href='admin_registration.php';</script>";
         }
     }
 }
