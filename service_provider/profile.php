@@ -17,6 +17,7 @@ if(isset($_POST['update_profile'])){
     $provider_contact = $_POST['provider_contact'];
     $provider_address = $_POST['provider_address'];
     
+    // --- Profile Picture Logic (This was already correct) ---
     $new_image = $_FILES['provider_image']['name'];
     $old_image = $_POST['old_image'];
 
@@ -28,17 +29,19 @@ if(isset($_POST['update_profile'])){
         $provider_image = $old_image;
     }
 
+    // --- NID Image Logic (FIXED SECTION) ---
     $new_image_nid = $_FILES['provider_nid']['name'];
     $old_image_nid = $_POST['old_image_nid'];
 
-    if(!empty($new_image)){
-        $provider_nid = $new_image;
+    if(!empty($new_image_nid)){ // <-- FIX: Checks the correct NID variable
+        $provider_nid = $new_image_nid; // <-- FIX: Uses the correct NID variable
         $provider_nid_tmp = $_FILES['provider_nid']['tmp_name'];
-        move_uploaded_file($provider_image_tmp, "../assets/images/provider_images/nid/$provider_nid");
+        move_uploaded_file($provider_nid_tmp, "../assets/images/provider_images/nid/$provider_nid"); // <-- FIX: Moves the correct temp file
     } else {
         $provider_nid = $old_image_nid;
     }
 
+    // --- Database Update Logic (This was already correct) ---
     $stmt = $con->prepare("UPDATE service_provider SET provider_name=?, provider_email=?, provider_contact=?, provider_address=?, provider_image=?, provider_nid=? WHERE provider_id=?");
     $stmt->bind_param("ssssssi", $provider_name, $provider_email, $provider_contact, $provider_address, $provider_image, $provider_nid, $provider_id);
     if($stmt->execute()){
@@ -66,6 +69,8 @@ $stmt_fetch->close();
             <div class="card-body">
                 <form action="" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="old_image" value="<?php echo $provider_data['provider_image']; ?>">
+                    <input type="hidden" name="old_image_nid" value="<?php echo $provider_data['provider_nid']; ?>">
+                    
                     <div class="text-center mb-4">
                         <img src="../assets/images/provider_images/<?php echo $provider_data['provider_image']; ?>" alt="Provider Image" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
                     </div>
@@ -85,25 +90,19 @@ $stmt_fetch->close();
                             <input type="text" name="provider_contact" class="form-control" value="<?php echo $provider_data['provider_contact']; ?>">
                         </div>
                         <div class="col-md-6 mb-3">
-                             <label for="provider_image" class="form-label">Update Profile Picture</label>
+                            <label for="provider_image" class="form-label">Update Profile Picture</label>
                             <input type="file" name="provider_image" class="form-control">
                         </div>
-
                     </div>
-
                     <div class="row">
-                        
-
                         <div class="col-md-6 mb-3">
                             <img src="../assets/images/provider_images/nid/<?php echo $provider_data['provider_nid']; ?>" alt="Provider Nid" style="width: 200px; height: 120px; object-fit: cover;">
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="provider_nid" class="form-label">Update NID Card Picture</label>
                             <input type="file" name="provider_nid" class="form-control">
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label for="provider_address" class="form-label">Address</label>
                         <textarea name="provider_address" class="form-control" rows="3"><?php echo $provider_data['provider_address']; ?></textarea>
